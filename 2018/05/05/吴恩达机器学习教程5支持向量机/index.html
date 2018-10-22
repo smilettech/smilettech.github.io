@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        吴恩达机器学习教程5_支持向量机 - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#优化目标"><span class="toc-text">优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对大边界的理解"><span class="toc-text">对大边界的理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#核函数"><span class="toc-text">核函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多分类问题"><span class="toc-text">多分类问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择哪种学习算法？"><span class="toc-text">选择哪种学习算法？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习"><span class="toc-text">练习</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        吴恩达机器学习教程5_支持向量机
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-05 14:41:04</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><p>　　监督学习很多学习算法的性能都非常类似，所以重要的不是你应该选择哪个算法，而是应用这些算法时,你为学习学习算法所设计的特征量的选择、正则化参数的选择等。监督学习还有一个更加强大的算法，被称为支持向量机(Support Vector Machine)。与逻辑回归和神经网络相比，支持向量机在学习复杂的非线性方程时提供了一种更为清晰的方式。正如我们之前开发的学习算法，从优化目标开始。为了描述支持向量机，我将会一点点修改逻辑回归的损失函数来得到支持向量机的损失函数。<br>　　<img src="/2018/05/05/吴恩达机器学习教程5支持向量机/损失函数.png" alt="损失函数"><br>　　有别于逻辑回归输出的概率，当最小化SVM的损失函数得到参数时，直接预测输出值是1还是0</p>
+<h3 id="对大边界的理解"><a href="#对大边界的理解" class="headerlink" title="对大边界的理解"></a>对大边界的理解</h3><p>　　人们有时将支持向量机看作是大间距分类器。SVM的要求很高，不仅要能正确分开样本，即不仅仅要求$θ^T&gt;0$，还需要它比0大得多(比如大于1,就分为正类)。这就相当于在SVM中嵌入了一个额外的安全因子，或者说安全的间距因子。<br>　　当训练集线性可分(存在一条直线把正负样本分开)时，当然有多条不同的直线，可以把正样本和负样本完全分开，SVM会选择更稳健的决策界在分离正样本和负样本上它显得的更好，在分离正样本和负样本上它显得的更好，从数学上讲这条线与训练样本之间的距离最大，这个距离叫做间距（margin）<br>　　事实上，支持向量机现在要比这个大间距分类器所体现得更成熟，尤其是当你使用大间距分类器的时候，你的学习算法会受异常点(outlier)的影响，如果正则化参数C设置的非常大，决策界线就会因为一个异常点而发生大的改变。如果C设置的小一点，就会适当放宽要求，不容易受异常点影响。当然数据如果不是线性可分的，如果你在这里有一些正样本或者你在这里有一些负样本，则支持向量机也会将它们恰当分开。</p>
+<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>　　回顾我们之前讨论过可以使用高级数的多项式模型来解决无法用直线进行分隔的分类问题，模型可能是$θ_0+θ_1x_1+θ_2x_2+θ_3x_1x_2+θ_4x_1^2+θ_5x_2^2+…$的形式，我们可以用一系列的新特征f来替换模型中的每一项，比如令$f_1=x_1$，$f_2=x_2$，$f_3=x_1x_2$，$f_4=x_1^2$，$f_5=x_2^2$，得到$h_θ(x)=f_1+f_2+…+f_n$。然而，除了对原有的特征进行组合以外，有没有更好的方法来构造f？我们可以利用核函数来计算出新的特征<br>　　给定一个训练实例x，利用x的各个特征与我们预先选定的地标$l^{(1)}$、$l^{(2)}$、$l^{(3)}$的近似程度来选取新的特征f1、f2、f3<br>　　<img src="/2018/05/05/吴恩达机器学习教程5支持向量机/地标.png" alt="地标"><br>　　比如<script type="math/tex">f_1=similarity(x,l^{(1)})=e(-\frac{||x-l^{(1)}||^2}{2σ^2})</script>，其中<script type="math/tex">||x-l^{(1)}||^2=\sum_{j=1}{n}(x_j-l_j^{(1)})^2</script>，是实例x中所有特征与地标$l^{(1)}$之间的距离之和，而$similarity(x,l^{(1)})$就是核函数，具体而言这是一个高斯核函数(Gaussian Kernel)，注意这个函数与正态分布没什么实际上的关系，只是看上去像而已。<br>　　地标有什么作用？如果一个训练实例x与地标L之间的距离近似为0，则新特征f近似于1；如果训练实例x与地标L之间的距离较远，则f近似于0.假设我们的训练实例含有两个特征[x1,x2]，给定地标$l^{(1)}$与不同的σ值，如图：<br>　　<img src="/2018/05/05/吴恩达机器学习教程5支持向量机/高斯核函数.png" alt="高斯核函数"><br>　　图中水平面的坐标为x1、x2，而垂直坐标轴代表f。可以看出，只有当x与$l^{(1)}$重合时f才具有最大值。随着x的改变f值改变的速率受到$σ^2$的控制。<br>　　在下图中，当实例处于洋红色的点位置处，因为其离$l^{(1)}$更近，但是离$l^{(2)}$和$l^{(3)}$较远，因此f1接近1，而f2、f3接近0，因此$h_θ(x)=θ_0+θ_1f_1+θ_2f_2+θ_1f_3&gt;0$，预测y=1。同理可以求出，对于离$l^{(2)}$较近的绿色点，也预测y=1，但是对于蓝绿色的点，因为其离三个地标都较远，预测y=0。<br>　　<img src="/2018/05/05/吴恩达机器学习教程5支持向量机/预测.png" alt="预测"><br>　　这样，图中红色的封闭曲线所表示的范围，便是我们依据一个单一的训练实例和我们选取的地标所得出的判定边界，在预测时，我们采用的特征不是训练实例本身的特征，而是通过核函数计算出的新特征f1、f2、f3。<br>　　如何选择地标？我们通常是根据训练集的数量选择地标的数量，比如训练集中有m个实例，则选取m个地标，并令$l^{(1)}=x^{(1)}$,$l^{(2)}=x^{(2)}$,…,$l^{(m)}=x^{(m)}$。这么做的好处是：现在我们得到的新特征是建立在原有特征与训练集中所有其他特征之间距离的基础之上的<br>　　【其他核函数】在高斯核函数之外我们还有其他一些选择，比如多项式核函数（Polynomial Kernel）、字符串核函数（String kernel）、卡方核函数（ chi-square kernel）、直方图交集核函数（histogram intersection kernel）等。这些核函数的目标也都是根据训练集和地标之间的距离来构建新特征，这些核函数需要满足Mercer’s定理，才能被支持向量机的优化软件正确处理。</p>
+<h3 id="多分类问题"><a href="#多分类问题" class="headerlink" title="多分类问题"></a>多分类问题</h3><p>　　假设我们利用之前介绍的一对多方法来解决一个多类分类问题。如果一共有k个类，则我们需要k个模型，以及k个参数向量θ。我们同样也可以训练k个支持向量机来解决多类分类问题。但是大多数支持向量机软件包都有内置的多类分类功能，我们只要直接使用即可。<br>　　尽管你不去写你自己的SVM的优化软件，但是你也需要做几件事：①提出参数C的选择。我们在之前的视频中讨论过误差/方差在这方面的性质；②选择内核参数或你想要使用的相似函数，其中一个选择是：我们选择不需要任何内核参数，没有内核参数的理念，也叫线性核函数。因此，如果有人说他使用了线性核的SVM，这就意味这他使用了不带有核函数的SVM。</p>
+<h3 id="选择哪种学习算法？"><a href="#选择哪种学习算法？" class="headerlink" title="选择哪种学习算法？"></a>选择哪种学习算法？</h3><p>　　下面是一些普遍使用的准则：（n为特征数，m为训练样本数）<br>　　(1)如果m&lt;&lt;n，即训练集数据量不够支持我们训练一个复杂的非线性模型，我们选用逻辑回归或者不带核函数的SVM。<br>　　(2)如果nn较小，而且m大小中等，比如n在1~1000之间，而m在10~10000之间，使用高斯核函数的SVM。<br>　　(3)如果n较小，而m较大，例如n在1-1000之间，而m大于50000，则使用SVM会非常慢，解决方案是创造、增加更多的特征，然后使用逻辑回归或不带核函数的SVM。<br>　　当你有非常非常大的训练集且用高斯核函数是在这种情况下，SVM包仍然会有一些慢。此时我会尝试手动地创建更多的特征变量，然后用逻辑回归或者不带核函数的SVM。逻辑回归和不带核函数的SVM是非常相它们通常都会做相似的事情，并给出相似的结果。但是根据你实现的情况，其中一个可能会比另一个更加有效。但当你的特征变量的数量这是相当大时，不带核函数的SVM可能会表现得相当突出。<br>　　值得一提的是，神经网络在以上三种情况下都可能会有较好的表现，但是训练神经网络可能非常慢。而SVM可能会运行得比神经网络快得多，因为SVM具有的优化问题是一种凸优化，所以好的SVM优化软件包总是会找到全局最小值，或接近它的值。对于SVM你不需要担心局部最最优。<br>　　比选择哪种算法更重要的是：你有多少数据，你有多熟练是否擅长做误差分析和排除学习算法，指出如何设定新的特征变量和找出其他能决定你学习算法的变量等方面。</p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><p>　　①在一些样本2D数据集上展示scikit-learn SVM，其中包含线性和高斯核函数 ②使用自然语言处理和scikit-learn SVM构建电子邮件垃圾邮件分类器<br>　　<a href="https://htmlpreview.github.io/?https://github.com/smilettech/dataanalysis/blob/master/ML_exercise/支持向量机.html" target="_blank" rel="noopener">支持向量机</a></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>
