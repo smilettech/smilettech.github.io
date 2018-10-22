@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        scrapy爬虫进阶2：爬取动态页面 - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Splash渲染引擎"><span class="toc-text">Splash渲染引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）render-html端点"><span class="toc-text">（1）render.html端点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）execute端点"><span class="toc-text">（2）execute端点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在scrpay中使用Splash"><span class="toc-text">在scrpay中使用Splash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目实战：爬取toscrape中的名人名言"><span class="toc-text">项目实战：爬取toscrape中的名人名言</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        scrapy爬虫进阶2：爬取动态页面
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-03-23 18:36:27</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#爬虫" title="爬虫">爬虫</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <p>　　之前爬取的都是静态页面中的信息，静态页面的内容始终不变。之前爬取的都是静态页面中的信息，静态页面的内容始终不变。但在现实中的绝大多数网站页面都是动态页面，动态页面中的部分内容是浏览器运行页面中的javascript脚本动态生成的，爬取相对困难。<br>　　比如爬取quotes.toscrape.com/js的名人名言信息,用selector提取到的是空列表[]，从服务器的下载页面中并不包含这些信息，所以爬取失败了。当浏览器执行了页面中的一段javascript代码后，它们才被生成出来。可以阅读javascript代码，了解页面动态生成的细节，发现价格信息都保存在什么地方，然后用for循环迭代它的每项信息。<br>　　例子中的价格数据被硬编码于javascript代码中，实际中更常见的是javascript是通过HTTP请求跟网站动态交互获取数据（AJAX），然后使用数据更新HTML页面，爬取此类动态网页需要先执行页面中的javascript代码渲染页面，再进行爬取。下面我们介绍如何使用javascript渲染引擎渲染页面</p>
+<h2 id="Splash渲染引擎"><a href="#Splash渲染引擎" class="headerlink" title="Splash渲染引擎"></a>Splash渲染引擎</h2><p>　　Splash是scrapy官方推荐的javascript渲染引擎，它是使用Webkit开发的轻量级无界限浏览器，提供基于HTTP接口的javascript渲染服务，支持以下功能：①为用户返回经过渲染的HTML页面或页面截图 ②并发渲染多个页面 ③关闭图片加载，加速渲染 ④在页面中执行用户自定义的javascript代码 ⑤执行用户自定义的渲染脚本（lua）、功能类似于PhantomJS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">先安装Splash，在linux下使用dockker安装十分方便：</span><br><span class="line">$sudo apt-get install docker</span><br><span class="line">$sudo docker pull scrapinghub/splash</span><br><span class="line">安装完后，在本机的8050和8051端口开启Splash服务：</span><br><span class="line">$sudo docker run -pp 8050 -p 8051:8051 scrapinghub/splash</span><br></pre></td></tr></table></figure></p>
+<p>　　Splash功能丰富，包含多个服务端点，比如 ①<strong>render.html</strong>：提供javascript页面渲染服务 ②<strong>execute</strong>：执行用户自定义的渲染脚本（lua），利用该端点可在页面中执行javascript代码</p>
+<h3 id="（1）render-html端点"><a href="#（1）render-html端点" class="headerlink" title="（1）render.html端点"></a>（1）render.html端点</h3><p>　　javascript页面渲染服务是Splash中最基础的服务，看下表文档：<br>　　　　服务端点　　　　render.html<br>　　　　请求地址　　　　<a href="http://localhost:8050/render.html" target="_blank" rel="noopener">http://localhost:8050/render.html</a><br>　　　　请求方式　　　　GET/POST<br>　　　　返回类型　　　　html<br>　　render.html端点支持的参数如表所示：<br>　　　　参数　　　　是否必选　　　类型　　　　　描述<br>　　　　url　　　　　必选　　　　string　　 需要渲染页面的url<br>　　　　timeout　　　可选　　　　float　　　渲染页面超时时间<br>　　　　proxy　　　　可选　　　　string　　 代理服务器地址<br>　　　　wait 　　　　可选　　　　float　　　等待页面渲染的时间<br>　　　　images　　　 可选　　　　integer　　是否下载图片，默认是1<br>　　　　js_source　　可选　　　　string　　 用户自定义的javascript代码，在页面渲染前执行<br>　　下面是使用requests库调用render.html端点服务对页面quotes.toscrape.com/js进行渲染的示例代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from scrapy.selector import Selector</span><br><span class="line">spash_url=&apos;http://localhost:8050/render.html&apos;</span><br><span class="line">args=&#123;&apos;url&apos;:&apos;http://quotes.toscrape.com/js&apos;,&apos;timeout&apos;:5,&apos;image&apos;:0&#125;   #根据文档中的描述设置参数url、timeout、images</span><br><span class="line">response=requests.get(splash_url,params=args)     #发送HTTP请求到服务接口地址</span><br><span class="line">sel=Selector(response)</span><br><span class="line">sel.css(&apos;div.quote span.text::text&apos;).extract()  提取所有名人名言</span><br></pre></td></tr></table></figure></p>
+<h3 id="（2）execute端点"><a href="#（2）execute端点" class="headerlink" title="（2）execute端点"></a>（2）execute端点</h3><p>　　在爬取某些页面时，想在页面中执行一些用户自定义的javascript代码，比如用javascript模拟点击页面中的按钮，或调用页面中的javascript函数与服务器交互，利用Splash的execute端点提供的服务可以实现这样的功能，看表中的文档：<br>　　　　服务端点　　　　 execute<br>　　　　请求地址　　　　<a href="http://localhost:8050/execute" target="_blank" rel="noopener">http://localhost:8050/execute</a><br>　　　　请求方式　　　　POST<br>　　　　返回类型　　　　自定义<br>　　execute端点支持的参数：<br>　　　　参数　　　　是否必选　　　类型　　　　　描述<br>　　　　lua_source　　 必选　　　string　　　用户自定义的lua脚本<br>　　　　timeout　　　　可选　　　float　　　渲染页面超时时间<br>　　　　proxy　　　　　可选　　　string　　　代理服务器地址<br>　　可将execute端点的服务看做一个可用lua语言编程的浏览器，功能类似与PhantomJS，使用时，需要传递一个用户自定义的lua脚本给Splash，该lua脚本中包含用户想要模拟的浏览器行为。比如：①打开某url地址的页面 ②等待页面加载及渲染 ③执行javascript代码 ④获取HTTP响应头部 ⑤获取Cookie。下面是用requests库调用execute端点服务的示例代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import json</span><br><span class="line">lua_script=&quot;</span><br><span class="line">   function main(splash)</span><br><span class="line">       splash:go(&quot;http://example.com&quot;)  打开野茫茫</span><br><span class="line">       splash:wait(0.5)  等待加载</span><br><span class="line">       local title=splash:evaljs(&quot;document.title&quot;)  执行js代码获取结果</span><br><span class="line">       return &#123;title=title&#125;  返回json形式的结果</span><br><span class="line">   end</span><br><span class="line">splash_url=&quot;http://localhost:8050/execute&quot;</span><br><span class="line">headers=&#123;&apos;content-type&apos;:&apos;application/json&apos;&#125;</span><br><span class="line">data=json.dumps(&#123;&apos;lua_source&apos;:lua_script&#125;)</span><br><span class="line">response=requests.post(splash_rul,headers=headers,data=data)</span><br><span class="line">response.content      #返回b&apos;&#123;&quot;title&quot;:&quot;Example Domain&quot;&#125;&apos;</span><br><span class="line">response.json()     #返回&#123;&quot;title&quot;:&quot;Example Domain&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　用户自定义的lua脚本中必须包含一个main函数作为程序入口，main函数被调用时，会传入一个splash对象（lua中的对象），用户可以调用该对象上的方法操纵Splash。比如在上面的例子中，先调用go方法打开某页面，再调用wait方法等待页面渲染，然后调用evaljs方法执行一个javascript表达式，并将结果转化为相应的lua对象，最终Splash根据main函数的返回值构造HTTP响应返回给用户，main函数的返回值可以是字符串，也可以是lua中的表（类似Python字典），表会被编码成json串。<br>　　接下来，看一下splash对象常用的属性和方法：①splash.args属性：用户传入参数的表，通过该属性可以访问用户传入的参数，如splash.args.url、splash.args.wait；②splash.js_enabled属性：用于开启/进制javascript渲染，默认为true；③splash.images_enabled属性：用于开启/进制图片加载，默认为true；④splash:go方法，splash:go{url,baseurl=nil,headers=nil,http_method=”GET”,body=nil,formdata=nil}，类似于在浏览器中打开某url地址的页面，页面所需资源会被加载，并进行javascript渲染，可以通过参数指定HTTP请求头部、请求方法、表单数据等；⑤splash:wait方法，splash:wait{time,cancel_on_redirect=false,cancel_on_error=true}等待页面渲染，time参数等待的秒数；⑥splash:evaljs(snippet) 在当前页面下，执行一段javascript代码，并返回最后一句表达式的值；⑦splash:runjs(snippet)，在当前页面下，执行一段javascript代码，与evaljs方法相比，该函数只执行javascript代码，不返回值；⑧splash:url()获取当前页面的url；⑨splash:html()获取当前页面的HTML文本；⑩splash:get_cookies()获取全部Cookie信息</p>
+<h2 id="在scrpay中使用Splash"><a href="#在scrpay中使用Splash" class="headerlink" title="在scrpay中使用Splash"></a>在scrpay中使用Splash</h2><p>　　掌握了Splash渲染引擎的基本使用后，继续学习如何在scrapy中调用Splash服务，Python库的scrapy-splash是非常好的选择。项目开始前先安装scrapy-splash。在设置文件中设置scrapy-splash，添加内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#Splash服务器地址</span><br><span class="line">SPLASH_URL=&apos;http://localhost:8050&apos;</span><br><span class="line">#开启Splash的两个下载中间件并调整HttpCompressionMiddleware的次序</span><br><span class="line">DOWNLOADER_MIDDLEWARES= &#123;</span><br><span class="line">    &apos;scrapy_splash.SplashCookiesMiddleware&apos;:723,</span><br><span class="line">    &apos;scrapy_splash.SplashMiddleware&apos;:725,</span><br><span class="line">    &apos;scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware&apos;:800,</span><br><span class="line">&#125;</span><br><span class="line">#设置去重过滤器</span><br><span class="line">DUPEFILTER_CLASS=&apos;scrapy_splash.SplashAwareDupeFilter&apos;</span><br><span class="line">#用来支持cache_args（可选）</span><br><span class="line">SPIDER_MIDDLEWARES=&#123;</span><br><span class="line">    &apos;scrapy_splash.SplashDeduplicateArgsMiddleware&apos;:100,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　编写Spider代码过程中，使用scrapy_splash调用Splash服务非常简单，scrapy_splash中定义了一个SplashRequest类，用户只需要使用scrapy_splash.SplashRequest（替代scrapy.Request）提交请求即可。下面是SplashRequest构造器方法中的一些常用参数<br>　　　①url：与scrapy.Request中的url相同，也就是待爬取页面的url（注意，，不是Splash服务器地址）<br>　　　②headers：与scrapy.Request中的headers相同<br>　　　③cookies：与scrapy.Request中的cookies相同<br>　　　④args：传递给Splash的参数（除url以外），如wait、timeout、images、js_source等<br>　　　⑤cache_args：如果args中的某些参数每次调用都重复传递并且数据量较大（比如一般javascript代码），此时可以把该参数名填入cache_args列表中，让Splash服务器缓存该参数，如SplashRequest(url,args={‘js_source’:js,’wait’:0.5},cache_args=[‘js_source’])<br>　　　⑥endpoint：Splash服务端点，默认为’render.html’，即javascript页面渲染服务，该参数可以设置为’render.json’,’render.har’,’render.png’,’render.jpeg’,’execute’等，有些服务端点的功能我们没有讲解<br>　　　⑦splash_url：Splash服务器地址，默认None，即使用配置文件中SPLASH_URL的地址<br>　　现在，大家已经对如何在scrapy中使用Splash渲染引擎爬取动态页面有了一定了解，接下来我们在已经配置了Splash使用环境的splash_examples项目中完成两个实战项目</p>
+<h2 id="项目实战：爬取toscrape中的名人名言"><a href="#项目实战：爬取toscrape中的名人名言" class="headerlink" title="项目实战：爬取toscrape中的名人名言"></a>项目实战：爬取toscrape中的名人名言</h2><p>　　<strong>项目需求</strong>：爬取网站quotes.toscrape.com/js中的名人名言信息<br>　　<strong>创建项目</strong>：scrapy genspider quotes quotes.toscrapy.com<br>　　　在这个案例中，我们只需要使用Splash的render.html端点渲染页面，再进行爬取即可实现QuotesSpider，代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import scrapy</span><br><span class="line">from scrapy_splash import SplashRequest</span><br><span class="line">class QuotesSpider(scrapy.Spider):</span><br><span class="line">    name=&apos;quotes&apos;</span><br><span class="line">    allowed_domains=[&apos;quotes.toscrape.com&apos;]</span><br><span class="line">    start_urls=[&apos;http://quotes.toscrape.com/js/&apos;]</span><br><span class="line">    def start_requests(self):</span><br><span class="line">        for url in self.start_urls:</span><br><span class="line">            yield SplashRequest(url,args=&#123;&apos;images&apos;:0,&apos;timeout&apos;:3&#125;)</span><br><span class="line">    def parse(self,response):</span><br><span class="line">        for sel in response.css(&apos;div.quote&apos;):</span><br><span class="line">            quote=sel.css(&apos;span.text::text&apos;).extract_first()</span><br><span class="line">            author=sel.css(&apos;small.author::text&apos;).extract_first()</span><br><span class="line">            yield&#123;&apos;quote&apos;:quote,&apos;author&apos;:author&#125;</span><br><span class="line">        href=response.css(&apos;li.next &gt; a::attr(href)&apos;).extract_first()</span><br><span class="line">        if href:</span><br><span class="line">            url=response.urljoin(href)</span><br><span class="line">            yield SplashRequest(url,args=&#123;&apos;images&apos;:0,&apos;timeout&apos;:3&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>　　上述代码中，使用SplashRequest提交请求，在SplashRequest的构造器中无须传递endpoint参数，因为该参数默认值便是’render.html’。使用args参数进制Splash加载图片，并设置渲染超时时间。<br>　　运行爬虫，观察结果&gt;&gt;scrapy crawl quotes -o quotes.csv   &gt;&gt;at -n quotes.csv,运行结果显示，我们成功爬取了10个页面中的100条名人名言</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>
