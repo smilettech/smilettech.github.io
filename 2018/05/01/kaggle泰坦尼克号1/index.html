@@ -82,7 +82,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1、提出问题"><span class="toc-text">1、提出问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2、理解数据"><span class="toc-text">2、理解数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-采集数据"><span class="toc-text">2.1 采集数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-导入数据"><span class="toc-text">2.2 导入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-查看数据集信息"><span class="toc-text">2.3 查看数据集信息</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3、特征工程"><span class="toc-text">3、特征工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-数据预处理"><span class="toc-text">3.1 数据预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缺失值处理"><span class="toc-text">　缺失值处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-特征提取"><span class="toc-text">3.2 特征提取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-文本型数据"><span class="toc-text">3.2.1 文本型数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-组合特征"><span class="toc-text">3.2.2 组合特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-类别型数据"><span class="toc-text">3.2.3 类别型数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-数值型数据"><span class="toc-text">3.2.4 数值型数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-特征选择"><span class="toc-text">3.3 特征选择</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-构建模型"><span class="toc-text">4.构建模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-划分训练集和测试集"><span class="toc-text">4.1 划分训练集和测试集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-选择算法并评估模型"><span class="toc-text">4.2 选择算法并评估模型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-提交结果到Kaggle"><span class="toc-text">6.提交结果到Kaggle</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1、提出问题"><span class="toc-text">1、提出问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2、理解数据"><span class="toc-text">2、理解数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-采集数据"><span class="toc-text">2.1 采集数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-导入数据"><span class="toc-text">2.2 导入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-查看数据集信息"><span class="toc-text">2.3 查看数据集信息</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -130,23 +130,19 @@
     <div class="post-content no-indent">
         <h1 id="1、提出问题"><a href="#1、提出问题" class="headerlink" title="1、提出问题"></a>1、提出问题</h1><p>　　什么样的人在泰坦尼克号中更容易存活？</p>
 <h1 id="2、理解数据"><a href="#2、理解数据" class="headerlink" title="2、理解数据"></a>2、理解数据</h1><h2 id="2-1-采集数据"><a href="#2-1-采集数据" class="headerlink" title="2.1 采集数据"></a>2.1 采集数据</h2><p>　　从Kaggle泰坦尼克号项目页面下载数据：<a href="https://www.kaggle.com/c/titanic" target="_blank" rel="noopener">点击进入</a></p>
-<h2 id="2-2-导入数据"><a href="#2-2-导入数据" class="headerlink" title="2.2 导入数据"></a>2.2 导入数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#导入处理数据包</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment">#训练数据集</span></span><br><span class="line">train_data = pd.read_csv(<span class="string">"./train.csv"</span>)</span><br><span class="line"><span class="comment">#测试数据集</span></span><br><span class="line">test_data  = pd.read_csv(<span class="string">"./test.csv"</span>)</span><br><span class="line"><span class="comment">#合并数据集，方便同时对两个数据集进行清洗</span></span><br><span class="line">full = pd.concat([train_data, test_data], ignore_index = <span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="2-3-查看数据集信息"><a href="#2-3-查看数据集信息" class="headerlink" title="2.3 查看数据集信息"></a>2.3 查看数据集信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看数据</span></span><br><span class="line">full.head()</span><br></pre></td></tr></table></figure>
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
+<h2 id="2-2-导入数据"><a href="#2-2-导入数据" class="headerlink" title="2.2 导入数据"></a>2.2 导入数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment">#导入训练集、测试集</span></span><br><span class="line">train_data = pd.read_csv(<span class="string">"./train.csv"</span>)</span><br><span class="line">test_data  = pd.read_csv(<span class="string">"./test.csv"</span>)</span><br><span class="line"><span class="comment">#合并训练集和测试集，方便同时对两个数据集进行清洗</span></span><br><span class="line">full = pd.concat([train_data, test_data], ignore_index = <span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-查看数据集信息"><a href="#2-3-查看数据集信息" class="headerlink" title="2.3 查看数据集信息"></a>2.3 查看数据集信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">full.head()</span><br></pre></td></tr></table></figure>
+<p><div></div></p>
+<p><style><br>    .dataframe thead tr:only-child th {<br>        text-align: right;<br>    }</p>
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
 
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre><p>&lt;/style&gt;</p>
+<p><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -241,27 +237,20 @@
       <td>373450</td>
     </tr>
   </tbody>
-</table>
-</div>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看每一列的数据类型，和数据总数</span></span><br><span class="line">full.info()</span><br><span class="line"><span class="comment">#获取数值类型的描述统计信息</span></span><br><span class="line">full.describe()</span><br></pre></td></tr></table></figure>
+</table><br>&lt;/div&gt;<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看每一列的数据类型、数据规模</span></span><br><span class="line">full.info()</span><br><span class="line"><span class="comment">#查看数值类型的描述统计信息</span></span><br><span class="line">full.describe()</span><br></pre></td></tr></table></figure></p>
 <p>　　发现：数据一共1309行，其中训练集891行、测试集418行。<br>　　目标变量是Survived（0.0=遇难、1.0=生还)，是浮点型；特征分为以下几种类型：<br>（1）数值型(浮点型)<br>　　①Age：年龄，<strong>缺失263条数据</strong><br>　　②Fare：票价，<strong>缺失1条数据</strong><br>（2）数值型（整型）<br>　　①Parch：隔代直系亲属数<br>　　②SibSp：同代直系亲属数<br>（3）类别型<br>　　③Pclass：客舱等级（1=一等舱、2=二等舱、3=三等舱）<br>　　②Embarked：登船港口（S=英国南安普顿、C=法国瑟堡市、Q=爱尔兰昆士敦），<strong>缺失2条数据</strong><br>　　③Sex：性别（’male’、’female’）<br>（4）文本型<br>　　①Cabin：船舱号，<strong>缺失1014条数据</strong><br>　　②Name：乘客姓名<br>　　③Ticket：船票编号</p>
 <h1 id="3、特征工程"><a href="#3、特征工程" class="headerlink" title="3、特征工程"></a>3、特征工程</h1><h2 id="3-1-数据预处理"><a href="#3-1-数据预处理" class="headerlink" title="3.1 数据预处理"></a>3.1 数据预处理</h2><h3 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="　缺失值处理"></a>　缺失值处理</h3><p>　　Age：缺失263条，缺失量较大，之后用提取出特征，构建随机森林模型填充缺失值<br>　　Fare：缺失1条数据，通过其它数据推理出缺失值<br>　　Embarked：缺失2条数据，通过其它数据推理出缺失值<br>　　Cabin：缺失1014条数据，缺失过多，将缺失值都填充为0<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看Fare的缺失值</span></span><br><span class="line">full[full[<span class="string">'Fare'</span>].isnull()]</span><br></pre></td></tr></table></figure></p>
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
+<p><div></p>
+<p><style><br>    .dataframe thead tr:only-child th {<br>        text-align: right;<br>    }</p>
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
 
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre><p>&lt;/style&gt;</p>
+<p><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -296,25 +285,18 @@
       <td>3701</td>
     </tr>
   </tbody>
-</table>
-</div>
+</table><br>&lt;/div&gt;<br>　　缺失票价信息的乘客，在S登船港口、三等舱，所以用Embarked为S，Pclass为3的乘客的Fare中位数填充。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#填充Fare的缺失值</span></span><br><span class="line">fare = full[(full[<span class="string">'Embarked'</span>] == <span class="string">"S"</span>) &amp; (full[<span class="string">'Pclass'</span>] == <span class="number">3</span>)].Fare.median()</span><br><span class="line">full[<span class="string">'Fare'</span>]=full[<span class="string">'Fare'</span>].fillna(fare)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看Embarked的缺失值</span></span><br><span class="line">full[full[<span class="string">'Embarked'</span>].isnull()]</span><br></pre></td></tr></table></figure></p>
+<p><div></p>
+<p><style><br>    .dataframe thead tr:only-child th {<br>        text-align: right;<br>    }</p>
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
 
-<p>　　缺失票价信息的乘客，在S登船港口、三等舱，所以用Embarked为S，Pclass为3的乘客的Fare中位数填充。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#填充Fare的缺失值</span></span><br><span class="line">fare = full[(full[<span class="string">'Embarked'</span>] == <span class="string">"S"</span>) &amp; (full[<span class="string">'Pclass'</span>] == <span class="number">3</span>)].Fare.median()</span><br><span class="line">full[<span class="string">'Fare'</span>]=full[<span class="string">'Fare'</span>].fillna(fare)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看Embarked的缺失值</span></span><br><span class="line">full[full[<span class="string">'Embarked'</span>].isnull()]</span><br></pre></td></tr></table></figure></p>
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre><p>&lt;/style&gt;</p>
+<p><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -364,10 +346,7 @@
       <td>113572</td>
     </tr>
   </tbody>
-</table>
-</div>
-
-<p>　　缺失Embarked信息的乘客：都是一等舱，票价都是80<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">full.groupby([<span class="string">'Pclass'</span>,<span class="string">'Embarked'</span>]).Fare.median()</span><br></pre></td></tr></table></figure></p>
+</table><br>&lt;/div&gt;<br>　　缺失Embarked信息的乘客：都是一等舱，票价都是80<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">full.groupby([<span class="string">'Pclass'</span>,<span class="string">'Embarked'</span>]).Fare.median()</span><br></pre></td></tr></table></figure></p>
 <p>Pclass　Embarked<br>　1　　　　C　　　76.7292<br>　　　　 　Q　　　90.0000<br>　　　　　 S　　　52.0000<br>　　Name: Fare, dtype: float64<br>　　Embarked为C且Pclass为1的乘客的Fare中位数最接济你80，所以缺失值填充为C<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">full[<span class="string">'Embarked'</span>]=full[<span class="string">'Embarked'</span>].fillna(<span class="string">'C'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#填充Cabin的缺失值</span></span><br><span class="line">full[<span class="string">'Cabin'</span>] = full[<span class="string">'Cabin'</span>].fillna(<span class="string">'None'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#检查缺失值处理情况，最后只剩Age没有处理</span></span><br><span class="line">full.info()</span><br></pre></td></tr></table></figure></p>
 <h2 id="3-2-特征提取"><a href="#3-2-特征提取" class="headerlink" title="3.2 特征提取"></a>3.2 特征提取</h2><h3 id="3-2-1-文本型数据"><a href="#3-2-1-文本型数据" class="headerlink" title="3.2.1 文本型数据"></a>3.2.1 文本型数据</h3><p>　　Cabin：缺失的1014条数据都已经填充为0，特征值是由”字母+数字”组成，可以将字母提取出来，即客舱的类别<br>　　Name：从乘客姓名中提取头衔，可以用来预测年龄。将头衔分为以下6个类别：①Officer政府官员 ②Royalty王室（皇室） ③Mr已婚男士 ④Mrs已婚妇女 ⑤Miss年轻未婚女子 ⑥Master有技能的人/教师<br>Ticket：存在船票编号情况，统计共票号数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取Cabin中的字母</span></span><br><span class="line">full[<span class="string">'Cabin'</span>] = full[<span class="string">'Cabin'</span>].map(<span class="keyword">lambda</span> c:c[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#提取姓名中的头衔</span></span><br><span class="line">full[<span class="string">'Title'</span>] = full[<span class="string">'Name'</span>].apply(<span class="keyword">lambda</span> x:x.split(<span class="string">','</span>)[<span class="number">1</span>].split(<span class="string">'.'</span>)[<span class="number">0</span>].strip())</span><br><span class="line">title_map = &#123;<span class="string">"Capt"</span>:<span class="string">"Officer"</span>, <span class="string">"Col"</span>:<span class="string">"Officer"</span>, <span class="string">"Major"</span>:<span class="string">"Officer"</span>, <span class="string">"Dr"</span>:<span class="string">"Officer"</span>, <span class="string">"Rev"</span>:<span class="string">"Officer"</span>,</span><br><span class="line">             <span class="string">"Don"</span>:<span class="string">"Royalty"</span>, <span class="string">"Dona"</span>:<span class="string">"Royalty"</span>, <span class="string">"Sir"</span>:<span class="string">"Royalty"</span>, <span class="string">"the Countess"</span>:<span class="string">"Royalty"</span>,</span><br><span class="line">             <span class="string">"Mr"</span>:<span class="string">"Mr"</span>,</span><br><span class="line">             <span class="string">"Mme"</span>:<span class="string">"Mrs"</span>, <span class="string">"Ms"</span>:<span class="string">"Mrs"</span>, <span class="string">"Mrs"</span>:<span class="string">"Mrs"</span>,</span><br><span class="line">             <span class="string">"Mlle"</span>:<span class="string">"Miss"</span>, <span class="string">"Miss"</span>:<span class="string">"Miss"</span>,</span><br><span class="line">             <span class="string">"Master"</span>:<span class="string">"Master"</span>, <span class="string">"Jonkheer"</span>:<span class="string">"Master"</span> &#125;</span><br><span class="line">full[<span class="string">'Title'</span>] = full[<span class="string">'Title'</span>].map(title_map)</span><br><span class="line"></span><br><span class="line"><span class="comment">#统计每个乘客的共票号数</span></span><br><span class="line">ticketCount = dict(full[<span class="string">'Ticket'</span>].value_counts())</span><br><span class="line">full[<span class="string">'TicketCount'</span>] = full[<span class="string">'Ticket'</span>].apply(<span class="keyword">lambda</span> x:ticketCount[x])</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#填充Age的缺失值：用Sex、Title、Pclass三个特征构建随机森林模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">ageDf = full[[<span class="string">'Age'</span>, <span class="string">'Pclass'</span>,<span class="string">'Sex'</span>,<span class="string">'Title'</span>]]</span><br><span class="line">ageDf = pd.get_dummies(ageDf)</span><br><span class="line">known_age = ageDf[ageDf.Age.notnull()].as_matrix()</span><br><span class="line">unknown_age = ageDf[ageDf.Age.isnull()].as_matrix()</span><br><span class="line">X = known_age[:, <span class="number">1</span>:]</span><br><span class="line">y = known_age[:, <span class="number">0</span>]</span><br><span class="line">age_rf = RandomForestRegressor(random_state=<span class="number">0</span>)</span><br><span class="line">age_rf.fit(X, y)</span><br><span class="line">age_pred = age_rf.predict(unknown_age[:, <span class="number">1</span>:])</span><br><span class="line">full.loc[(full.Age.isnull()), <span class="string">'Age'</span>] = age_pred</span><br></pre></td></tr></table></figure>
@@ -378,21 +357,17 @@
 <p>　　Survived为1.0的有20个，Survived为0.0的有117个<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取异常组的姓氏</span></span><br><span class="line">a = FemaleChildGroup.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean()</span><br><span class="line">deadSurname = set(a[a.apply(<span class="keyword">lambda</span> x:x==<span class="number">0</span>)].index)</span><br><span class="line">b = MaleGroup.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean()</span><br><span class="line">survivedSurname = set(b[b.apply(<span class="keyword">lambda</span> x:x==<span class="number">1</span>)].index)</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将这两个异常组修改为正常</span></span><br><span class="line">full.loc[(full[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> deadSurname)),<span class="string">'Sex'</span>] = <span class="string">'male'</span></span><br><span class="line">full.loc[(full[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> deadSurname)),<span class="string">'Title'</span>] = <span class="string">'Mr'</span></span><br><span class="line">full.loc[(full[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> survivedSurname)),<span class="string">'Sex'</span>] = <span class="string">'female'</span></span><br><span class="line">full.loc[(full[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> survivedSurname)),<span class="string">'Title'</span>] = <span class="string">'Miss'</span></span><br></pre></td></tr></table></figure>
 <h3 id="3-2-3-类别型数据"><a href="#3-2-3-类别型数据" class="headerlink" title="3.2.3 类别型数据"></a>3.2.3 类别型数据</h3><p>　　类别值为2个的特征，原地修改；类别值为多个的特征，用One-hot编码生成虚拟变量，再添加进特征集中。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">full2 = full[[<span class="string">'Survived'</span>,<span class="string">'Pclass'</span>,<span class="string">'Sex'</span>,<span class="string">'Age'</span>,<span class="string">'Fare'</span>,<span class="string">'Embarked'</span>,<span class="string">'Title'</span>,<span class="string">'FamilyLarge'</span>,<span class="string">'FamilyMedian'</span>,<span class="string">'FamilySmall'</span>,<span class="string">'Cabin'</span>,<span class="string">'TicketCount'</span>]]</span><br><span class="line">full2 = pd.get_dummies(full2).astype(<span class="string">'float'</span>)</span><br><span class="line">pclassDf = pd.get_dummies( full[<span class="string">'Pclass'</span>] , prefix=<span class="string">'Pclass'</span> )</span><br><span class="line">full2 = pd.concat([full2,pclassDf],axis=<span class="number">1</span>).astype(<span class="string">'float'</span>)</span><br><span class="line">full2.drop(<span class="string">'Pclass'</span>,axis=<span class="number">1</span>,inplace=<span class="keyword">True</span>)</span><br><span class="line">full2.head()</span><br></pre></td></tr></table></figure></p>
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
+<p><div></p>
+<p><style><br>    .dataframe thead tr:only-child th {<br>        text-align: right;<br>    }</p>
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
 
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre><p>&lt;/style&gt;</p>
+<p><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -481,10 +456,8 @@
       <td>0.0</td>
     </tr>
   </tbody>
-</table>
-<p>5 rows × 30 columns</p>
-</div>
-
+</table></p>
+<p><p>5 rows × 30 columns</p><br>&lt;/div&gt;</p>
 <h3 id="3-2-4-数值型数据"><a href="#3-2-4-数值型数据" class="headerlink" title="3.2.4 数值型数据"></a>3.2.4 数值型数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">full2[<span class="string">'Age'</span>] = MinMaxScaler().fit_transform(full2.Age.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">full2[<span class="string">'Fare'</span>] = MinMaxScaler().fit_transform(full2.Fare.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">full2[<span class="string">'TicketCount'</span>] = MinMaxScaler().fit_transform(full2.TicketCount.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
 <h2 id="3-3-特征选择"><a href="#3-3-特征选择" class="headerlink" title="3.3 特征选择"></a>3.3 特征选择</h2><p>　　相关系数法：计算各个特征的相关系数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#相关性矩阵</span></span><br><span class="line">full2.corr()[<span class="string">'Survived'</span>].sort_values(ascending=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure></p>
 <p>　　Survived　　　　1.000000<br>　　Sex_female　　　0.710385<br>　　Title_Miss　　　0.497464<br>　　Title_Mrs　　　　0.403888<br>　　Pclass_1　　　　0.285904<br>　　FamilyMedian　　0.279855<br>　　Fare　　　　　　0.257307<br>　　Title_Master　　0.178526<br>　　Cabin_B　　　　 0.175095<br>　　Embarked_C　　　0.174718<br>　　Cabin_D　　　　 0.150716<br>　　Cabin_E　　　　 0.145321<br>　　Cabin_C　　　　 0.114652<br>　　Pclass_2　　　　0.093349<br>　　TicketCount　　 0.064962<br>　　Cabin_F　　　　 0.057935<br>　　Cabin_A　　　　 0.022287<br>　　Cabin_G　　　　 0.016040<br>　　Title_Royalty　　0.011329<br>　　Embarked_Q　　  0.003650<br>　　Cabin_T　　　　-0.026456<br>　　Title_Officer　　-0.042599<br>　　Age　　　　　　-0.073512<br>　　FamilyLarge　　-0.125147<br>　　Embarked_S　　 -0.155660<br>　　FamilySmall　　-0.203367<br>　　Cabin_N　　　　-0.316912<br>　　Pclass_3　　　　-0.322308<br>　　Sex_male　　　　-0.710385<br>　　Title_Mr　　　　-0.732785<br>　　Name: Survived, dtype: float64<br>　　一般来说，取绝对值后在0.09以下的没有相关性，0.09~0.3为弱相关，0.3~0.5为中等相关，0.5~1.0为强相关<br>剔除与Survived没有相关性的特征：TicketCount、Cabin_F、Cabin_A、Cabin_G、Title_Royalty、Embarked_Q、Cabin_T、Title_Officer、Age<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">del_list = [<span class="string">'TicketCount'</span>,<span class="string">'Cabin_F'</span>,<span class="string">'Cabin_A'</span>,<span class="string">'Cabin_G'</span>,<span class="string">'Title_Royalty'</span>,<span class="string">'Embarked_Q'</span>,<span class="string">'Cabin_T'</span>,<span class="string">'Title_Officer'</span>,<span class="string">'Age'</span>]</span><br><span class="line">full3 = full2.drop(del_list,axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
@@ -498,21 +471,17 @@
 <p>　　返回0.87150837988826813<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#高斯贝叶斯</span></span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> GaussianNB</span><br><span class="line">gnb = GaussianNB()</span><br><span class="line">gnb.fit(X_train, y_train)</span><br><span class="line">gnb.score(X_valid, y_valid)</span><br></pre></td></tr></table></figure></p>
 <p>　　返回0.84916201117318435</p>
 <h1 id="6-提交结果到Kaggle"><a href="#6-提交结果到Kaggle" class="headerlink" title="6.提交结果到Kaggle"></a>6.提交结果到Kaggle</h1><p>　　用训练好的模型svc预测测试集，得到的结果保存到csv文件中。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">y_pred = svc.predict(test).astype(int)   <span class="comment">#预测生成了numpy数组，元素是浮点型，要将元素转换成整型</span></span><br><span class="line">PassengerId = test_data.loc[:,<span class="string">'PassengerId'</span>]</span><br><span class="line">predDf = pd.DataFrame(&#123;<span class="string">'PassengerId'</span>: PassengerId, <span class="string">'Survived'</span>: y_pred&#125;)</span><br><span class="line">predDf.head()</span><br></pre></td></tr></table></figure></p>
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
+<p><div></p>
+<p><style><br>    .dataframe thead tr:only-child th {<br>        text-align: right;<br>    }</p>
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
 
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre><p>&lt;/style&gt;</p>
+<p><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -547,12 +516,9 @@
       <td>1</td>
     </tr>
   </tbody>
-</table>
-</div>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#保存结果</span></span><br><span class="line">predDf.to_csv( <span class="string">'result1.csv'</span> , index = <span class="keyword">False</span> )</span><br></pre></td></tr></table></figure>
+</table><br>&lt;/div&gt;<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#保存结果</span></span><br><span class="line">predDf.to_csv( <span class="string">'result1.csv'</span> , index = <span class="keyword">False</span> )</span><br></pre></td></tr></table></figure></p>
 <p>　　交结果，得分0.81339</p>
-
+</style></p>
         
         <br />
         <div id="comment-container">
