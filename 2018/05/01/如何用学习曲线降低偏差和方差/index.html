@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        如何用学习曲线降低偏差和方差 - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#偏差-方差权衡"><span class="toc-text">偏差-方差权衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习曲线"><span class="toc-text">学习曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测偏差和方差"><span class="toc-text">检测偏差和方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应对策略"><span class="toc-text">应对策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉验证"><span class="toc-text">交叉验证</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        如何用学习曲线降低偏差和方差
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-01 21:11:39</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#评估模型" title="评估模型">评估模型</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <p>　　机器学习模型两个主要的误差来源：<em>偏差</em>和<em>方差</em><br>　　在构建模型时，设法降低这两个主要误差（可以用学习曲线），模型的准确度会更高。</p>
+<h3 id="偏差-方差权衡"><a href="#偏差-方差权衡" class="headerlink" title="偏差-方差权衡"></a>偏差-方差权衡</h3><p>　　高偏差的模型方差小，低偏差的模型方差大，所以不能同时拥有较低的偏差和方差，需要在二者之间做一个权衡。<br>　　<em>什么是偏差？</em>  比如线性回归模型，它假设特征和目标之间存在线性关系，但是对于大多数实际场景来说，特征和目标之间的真实关系是复杂且非线性的。此时简化的假设,就会给模型带来<em>偏差</em>，对真实关系的假设错误越多，偏差越高，反之亦然。<br>　　<em>什么是方差？</em>  在监督学习中，假设特征和目标间存在某种关系，并用模型f来表示这种未知的关系。但在实际应用中，f几乎是完全未知的，所以我们试着用f(^)来预测，使用某一数据集会输出一个f(^)，使用不同的数据集，也许会输出不同的f(^)（总结：随着训练集的改变,输出不同的g，变化的量叫做<em>方差</em>）<br>　　<em>为什么高偏差的模型方差小？</em>  如下图，当训练集发生改变时，线性回归模型f(^)没有太大变化，所以方差很小。同理：对于低偏差的模型，训练集改变时模型f(^)发生较大变化，方差较大。<br>　　<img src="/2018/05/01/如何用学习曲线降低偏差和方差/线性回归.png" alt="线性回归"><br>　　<em>权衡偏差和方差</em> （如下图）一般来说，在某些测试数据上进行测试时，模型g会有一些误差。偏差和方差只会增加误差，我们希望偏差较低→以避免建立一个过于简单的模型（一个简单模型在训练集、测试集上的表现都很糟糕）；同样我们也希望方差较低→以避免建立一个过于复杂的模型（一个复杂模型完全适合训练集上的所有数据点,但这只是更大样本集的一个小样本集、数据点包含的噪音也被模型捕捉到，所以在测试集上的表现通常很糟糕）<br>　　<img src="/2018/05/01/如何用学习曲线降低偏差和方差/偏差方差.png" alt="偏差方差"></p>
+<h3 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h3><p>　　<img src="/2018/05/01/如何用学习曲线降低偏差和方差/学习曲线.png" alt="学习曲线"><br>　　有两个误差值可供测量：验证集和训练集。根据训练集大小的变化绘制两个误差，得到两条曲线，这两条曲线被称为<em>学习曲线</em>。<em>学习曲线展示了随着训练集数据量的增加，模型误差的变化</em>。<br>　　N=1时（N为训练实例的数量），该模型完全适合单个训练数据点，误差为0，但并不适合于20个不同数据点的验证集，误差要高的多。随着N增大，模型不再适合训练集，训练误差变大。然而模型是在更多数据上训练的，因此可以更好的适应验证集，验证误差减少。</p>
+<h3 id="检测偏差和方差"><a href="#检测偏差和方差" class="headerlink" title="检测偏差和方差"></a>检测偏差和方差</h3><p>　　<em>如何看偏差的高低？</em>  看训练误差，训练误差很低→低偏差，训练误差很高→高偏差<br>　　<em>如何看方差的高低？</em>  看训练和验证训练学习曲线之间的间隔（间隔 = 验证误差 - 训练误差），误差差异越大，间隔就越大，方差就越大<br>　　<img src="/2018/05/01/如何用学习曲线降低偏差和方差/例子.png" alt="例子"><br>　　补充：描述模型有多差的误差度量，不可约误差给出一个下限：不能低于该下限值。描述模型有多好的误差度量，不可约误差给出一个上限：不能超出该上限值。在很多技术著作中，贝叶斯误差率通常用来指代分类器的最佳误差值，类似于不可约误差。</p>
+<h3 id="应对策略"><a href="#应对策略" class="headerlink" title="应对策略"></a>应对策略</h3><p>（1）高偏差、低方差的算法<br>　　它对训练数据欠拟合。此时增加训练数据的实例,也不可能会构建更好的模型。一般改进高偏差、低方差的方法如下：<br>　　　　①增加更多的特征<br>　　　　②调整模型参数，增加模型的复杂度<br>　　　　③降低正则化系数（正则化阻止了算法更好的拟合数据）<br>（2）低偏差、高方差的算法<br>　　它对训练数据过度拟合(模型在训练集上表现良好,在验证集上表现很差)。此时添加新的训练实例,很可能构建更好地模型，因为验证曲线在最大训练集上没有趋于平缓，所以因此仍有潜力收敛到训练曲线。一般改进低偏差、高方差的方法如下：<br>　　　　①减少当前训练数据特征数量,或降维<br>　　　　②调整模型参数，降低模型的复杂度<br>　　　　③增加更多的训练实例<br>　　　　④增加正则化系数</p>
+<h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><p>　　学习曲线上每一个横坐标的刻度，可以是一种数据集的分割方式。在每个刻度上应用k折交叉验证方法,会得到k个训练误差、k个验证误差，然后分别取平均值。最后每个刻度上就会有1个训练误差平均值、1个验证误差平均值，用它们绘制学习曲线。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>

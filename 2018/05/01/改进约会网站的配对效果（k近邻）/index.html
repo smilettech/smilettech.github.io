@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        改进约会网站的配对效果（k近邻） - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决思路"><span class="toc-text">解决思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#【补充】代码中使用到的函数"><span class="toc-text">【补充】代码中使用到的函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#【补充】用sklearn实现knn算法，用学习曲线评估"><span class="toc-text">【补充】用sklearn实现knn算法，用学习曲线评估</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        改进约会网站的配对效果（k近邻）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-01 10:15:31</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习实战" title="机器学习实战">机器学习实战</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>　　我的朋友海伦,一直使用在线约会网站,寻找适合自己的约会对象。约会网站会推荐给她不同的人选，但是她没有从中找到喜欢的人。她总结了一下以前交往过的人有3种类型（不喜欢、魅力一般、极具魅力），但是她不知道网站推荐的人选究竟属于哪一类。<br>　　需求：望分类器能将这些推荐的人选,划分到确切的类别中。</p>
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><p>　　<img src="/2018/05/01/改进约会网站的配对效果（k近邻）/knn.png" alt="knn"></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>　　(1)收集数据<br>　　(2)准备数据：filematrix<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">#用Python处理文本文件非常容易</span><br><span class="line">def filematrix(filename):</span><br><span class="line">    fr = open(filename)        #打开文件</span><br><span class="line">    fr_lines = fr.readlines()</span><br><span class="line">    m = len(fr_lines)       #文件文件包含多少行</span><br><span class="line">    X_raw = np.zeros((m,3))       #初始化特征矩阵</span><br><span class="line">    y_raw = []       #初始化标签列表</span><br><span class="line">    i = 0      #初始化指向特征矩阵的索引</span><br><span class="line">    mapdict = &#123;&apos;didntLike&apos;:1,&apos;smallDoses&apos;:2,&apos;largeDoses&apos;:3&#125;      #将标签的字符串转为数值</span><br><span class="line">    for line in fr_lines:       #遍历每一行数据</span><br><span class="line">        line = line.strip()      #删除最后的回车符</span><br><span class="line">        line_list = line.split(&apos;\t&apos;)      #用\t分割该行数据</span><br><span class="line">        X_raw[i,:] = line_list[0:3]       #前三个元素是特征</span><br><span class="line">        y_raw.append(mapdict[line_list[-1]])      #最后一个元素是标签</span><br><span class="line">        i += 1</span><br><span class="line">    return X_raw,y_raw      #返回原始特征矩阵、标签</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; X_raw, y_raw = filematrix(&apos;datingTestSet.txt&apos;)</span><br><span class="line">&gt;&gt; X_raw</span><br><span class="line">array([[  4.09200000e+04,   8.32697600e+00,   9.53952000e-01],</span><br><span class="line">       [  1.44880000e+04,   7.15346900e+00,   1.67390400e+00],</span><br><span class="line">       [  2.60520000e+04,   1.44187100e+00,   8.05124000e-01],</span><br><span class="line">       ...,</span><br><span class="line">       [  2.65750000e+04,   1.06501020e+01,   8.66627000e-01],</span><br><span class="line">       [  4.81110000e+04,   9.13452800e+00,   7.28045000e-01],</span><br><span class="line">       [  4.37570000e+04,   7.88260100e+00,   1.33244600e+00]])</span><br><span class="line">&gt;&gt; y_raw[:20]</span><br><span class="line">[3, 2, 1, 1, 1, 1, 3, 3, 1, 3, 1, 1, 2, 1, 1, 1, 1, 1, 2, 3]</span><br></pre></td></tr></table></figure>
+<p>　　(3)归一化：autoNorm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def autoNorm(X_raw):        #输入是一个矩阵，而不是向量</span><br><span class="line">    minvals = X_raw.min(0)      #每列的最小值</span><br><span class="line">    maxvals = X_raw.max(0)      #每列的最大值</span><br><span class="line">    rangevals = maxvals - minvals      #每列的极差</span><br><span class="line">    X_norm = np.zeros(X_raw.shape)      #初始化特征矩阵</span><br><span class="line">    m = X_raw.shape[0]      #特征矩阵行数</span><br><span class="line">    X_norm = X_raw - np.tile(minvals,(m,1))      #（分子）每个元素减去对应列的最小值</span><br><span class="line">    X_norm = X_norm/np.tile(rangevals,(m,1))      #每个元素除以对应列的极差</span><br><span class="line">    return X_norm, rangevals, minvals        #返回每一列的极差、最小值，是为了之后输入一个特征向量时做预测</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; X_norm, rangelist, minvals = autoNorm(X_raw)</span><br><span class="line">&gt;&gt;&gt; X_norm</span><br><span class="line">array([[ 0.44832535,  0.39805139,  0.56233353],</span><br><span class="line">       [ 0.15873259,  0.34195467,  0.98724416],</span><br><span class="line">       [ 0.28542943,  0.06892523,  0.47449629],</span><br><span class="line">       ...,</span><br><span class="line">       [ 0.29115949,  0.50910294,  0.51079493],</span><br><span class="line">       [ 0.52711097,  0.43665451,  0.4290048 ],</span><br><span class="line">       [ 0.47940793,  0.3768091 ,  0.78571804]])</span><br><span class="line">&gt;&gt; rangevals</span><br><span class="line">array([  9.12730000e+04,   2.09193490e+01,   1.69436100e+00])</span><br><span class="line">&gt;&gt; minvals</span><br><span class="line">array([ 0.      ,  0.      ,  0.001156])</span><br></pre></td></tr></table></figure>
+<p>　　(4)knn算法：knnFunc<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def knnFunc(x_test, X_norm, y_raw, k):</span><br><span class="line">    m = X_norm.shape[0]        #有几个样本(行数)</span><br><span class="line">    X_diff = np.tile(x_test,(m,1)) - X_norm      #每个训练数据点与新数据的差值</span><br><span class="line">    X_sqdiff = X_diff**2         #每个元素取平方</span><br><span class="line">    x_sqdiffsum = X_sqdiff.sum(axis=1)       #对每一行的元素求和</span><br><span class="line">    x_distance = x_sqdiffsum**0.5       #每个元素取根号，得到距离向量</span><br><span class="line"></span><br><span class="line">    sorted_indice = x_distance.argsort()       #升序排序，返回索引</span><br><span class="line">    classCount=&#123;&#125;         #空字典，用来放&#123;&apos;类别&apos;:出现次数&#125;</span><br><span class="line"></span><br><span class="line">    for i in range(k):        #提取前k个索引</span><br><span class="line">        votellabel = y_raw[sorted_indice[i]]      #索引对应的类别</span><br><span class="line">        classCount[votellabel] = classCount.get(votellabel,0) + 1      #存在→加1，不存在→为1</span><br><span class="line">    sortedClassCount = sorted(classCount.items(), key=lambda x:x[1], reverse=True)       #返回以tuple为元素的列表，按照tuple的第二个元素排序</span><br><span class="line">    return sortedClassCount[0][0]</span><br></pre></td></tr></table></figure></p>
+<p>　　(5)测试模型误分类率：datingClassTest<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def datingClassTest():</span><br><span class="line">    train_test_ratio = 0.05</span><br><span class="line">    X_raw, y_raw = filematrix(&apos;datingTestSet.txt&apos;)       #读取原始数据</span><br><span class="line">    X_norm ,_,_ = autoNorm(X_raw)         #归一化</span><br><span class="line">    m = X_norm.shape[0]         #特征矩阵行数</span><br><span class="line">    test_num = int(m*train_test_ratio)       #测试数据的个数</span><br><span class="line">    X_train = X_norm[test_num:m,:]</span><br><span class="line">    y_train = y_raw[test_num:m]</span><br><span class="line">    errorCount = 0.0        #初始化误分类次数</span><br><span class="line">    for i in range(test_num):        #遍历测试数据的索引</span><br><span class="line">        knn_result = knnFunc(X_norm[i,:], X_train, y_train, 3)</span><br><span class="line">        if (knn_result != y_raw[i]):</span><br><span class="line">              errorCount += 1.0</span><br><span class="line">    error_rate = errorCount/float(test_num)      #计算误分类率</span><br><span class="line">    return error_rate</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; datingClassTest()</span><br><span class="line">0.2</span><br></pre></td></tr></table></figure>
+<p>　　(6)使用模型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def classfyPerson():</span><br><span class="line">    x1 = float(input(&apos;每年获得的飞行常客里程数：&apos;))      #手动输入x1、x2、x3的值</span><br><span class="line">    x2 = float(input(&apos;玩视频游戏所消耗时间百分比：&apos;))</span><br><span class="line">    x3 = float(input(&apos;每周消费的冰淇淋公升数：&apos;))</span><br><span class="line"></span><br><span class="line">    X_raw, y_raw = filematrix(&apos;datingTestSet.txt&apos;)</span><br><span class="line">    X_norm, rangevals, minvals = autoNorm(X_raw)</span><br><span class="line">    x_pred = np.array([x1,x2,x3])</span><br><span class="line">    x_pred = (x_pred - minvals)/rangevals</span><br><span class="line">    y_pred = knnFunc(x_pred, X_norm, y_raw, 3)</span><br><span class="line">    mlist = [&apos;didntLike&apos;,&apos;smallDoses&apos;,&apos;largeDoses&apos;]</span><br><span class="line">    print(&apos;您可能会认为这个人：%s&apos; % (mlist[y_pred-1]))</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; classfyPerson()</span><br><span class="line">每年获得的飞行常客里程数：10000</span><br><span class="line">玩视频游戏所消耗时间百分比：10</span><br><span class="line">每周消费的冰淇淋公升数：0.5</span><br><span class="line">您可能会认为这个人：smallDoses</span><br></pre></td></tr></table></figure>
+<h3 id="【补充】代码中使用到的函数"><a href="#【补充】代码中使用到的函数" class="headerlink" title="【补充】代码中使用到的函数"></a>【补充】代码中使用到的函数</h3><p>（1）文件对象的三个“读”方法：read()、readline()、readlines()<br>　　read()每次读取整个文件，通常用于将文件内容放到一个字符串变量中。这对于连续的面向行的处理是比不要的，而且如果文件大于可用内存，则不可能实现这种处理；<br>　　readlines()也是一次读取整个文件，自动将文件内容分析成一个列表，列表的元素是每一行字符串（可以用for循环提取）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; fr = open(&apos;datingTestSet.txt&apos;)</span><br><span class="line">&gt;&gt; for line in fr.readlines():</span><br><span class="line">       line = line.strip()      #去掉最后的回车</span><br><span class="line">       print(type(line),line)</span><br><span class="line"></span><br><span class="line">&lt;class &apos;str&apos;&gt; 40920 8.326976    0.953952    largeDoses</span><br><span class="line">&lt;class &apos;str&apos;&gt; 14488 7.153469    1.673904    smallDoses</span><br></pre></td></tr></table></figure></p>
+<p>　　readline()每次只读取一行，只有遇到回车(\r)或者换行符(\n)才会返回结构，通常比readlines()慢得多，仅当没有足够内存可以一次读取整个文件时，才应该使用它<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; fr = open(&apos;datingTestSet.txt&apos;)</span><br><span class="line">&gt;&gt; while True:</span><br><span class="line">       line = fr.readline()</span><br><span class="line">       line = line.strip()</span><br><span class="line">       print(type(line), line)</span><br><span class="line"></span><br><span class="line">&lt;class &apos;str&apos;&gt; 40920 8.326976    0.953952    largeDoses</span><br><span class="line">&lt;class &apos;str&apos;&gt; 14488 7.153469    1.673904    smallDoses</span><br></pre></td></tr></table></figure></p>
+<p>（2）np.tile(数组, 数组重复的次数)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; np.tile([0,0],2)</span><br><span class="line">array([0,0,0,0])    #在列方向上重复2次，还是一维</span><br><span class="line">&gt;&gt; np.tile([0,0],[1,1])    #在行方向上重复1次，列方向上重复1次</span><br><span class="line">array([[0,0]])</span><br><span class="line">&gt;&gt; np.tile([0,0],[2,1])    #行2次，列1次</span><br><span class="line">array([[0,0]</span><br><span class="line">       [0,0]])</span><br><span class="line">&gt;&gt; np.tile([0,0],[1,2])    #行1次，列2次，变成二维</span><br><span class="line">array([[0,0,0,0]])</span><br><span class="line">&gt;&gt; np.tile([0,0],[2,3])    #行2次，列3次</span><br><span class="line">array([[0,0,0,0,0,0]</span><br><span class="line">       [0,0,0,0,0,0]])</span><br></pre></td></tr></table></figure></p>
+<p>（3）numpy数组的sum方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; a = np.array([[1,2,3],[4,5,6]])</span><br><span class="line">&gt;&gt; a.sum()</span><br><span class="line">21</span><br><span class="line">&gt;&gt; a.sum(axis=0)   #每一列的元素相加</span><br><span class="line">array([5, 7, 9])</span><br><span class="line">&gt;&gt; a.sum(axis=1)   #每一行的元素相加</span><br><span class="line">array([ 6, 15])</span><br></pre></td></tr></table></figure></p>
+<p>（4）字典的get方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; a = &#123;&apos;A&apos;:1, &apos;B&apos;:6&#125;</span><br><span class="line">&gt;&gt; a.get(&apos;A&apos;,0)</span><br><span class="line">1</span><br><span class="line">&gt;&gt; a.get(&apos;B&apos;,0)</span><br><span class="line">6</span><br><span class="line">&gt;&gt; a.get(&apos;C&apos;,0)</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
+<p>（5）对字典排序的三种方法<br>　　①sorted(dict.items(), key=lambda x:x[1])<br>　　②import operator; sorted(dict.items(), keys=operator.itemgetter(1))<br>　　③sorted(zip(d.values(), d.keys())<br>注意：sorted是内建函数，它的可选参数①reverse,默认是False,升序排序；②key,为每个元素提取比较值的函数<br>　　　dict.items返回[(key,value),..]的迭代器，是无序的<br>　　　lambda x:x[1]取每个tuple的第二个元素<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; a = &#123;&apos;A&apos;:1, &apos;B&apos;:6&#125;</span><br><span class="line">&gt;&gt; b = sorted(a.items(),key=lambda x:x[1], reverse=True)</span><br><span class="line">[(&apos;B&apos;, 6), (&apos;A&apos;, 1)]</span><br></pre></td></tr></table></figure></p>
+<p>（6）matplotlib.pyplot.scatter<br>参数①<strong>x</strong>，<strong>y</strong>   是输入数据，是(n,)的数组<br>　　②<strong>s</strong>   设置数据点的大小，是变量或(n,)的数组，默认为20<br>　　③<strong>c</strong>   颜色序列<br>　　④<strong>marker</strong>   数据点的形状，默认为’o’<br>　　⑤<strong>cmap</strong>   Colormap实例，默认None<br>　　⑥<strong>norm</strong>   数据点的亮度0-1，float数据，默认None<br>　　⑦<strong>alpha</strong>   透明度0-1，默认None<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import matplotlib.pyplot as plt</span><br><span class="line">&gt;&gt; fig = plt.figure(figsize=(8,6))      #画板</span><br><span class="line">&gt;&gt; ax = fig.add_subplot(111)     #画纸，或者前两个合并fig,ax = plt.subplots(1,1,figsize=(8,6))</span><br><span class="line">&gt;&gt; ax.scatter(一系列参数)        #画散点图</span><br><span class="line">&gt;&gt; plt.show()</span><br><span class="line"></span><br><span class="line">#plt无法正常显示中文的解决方法</span><br><span class="line">&gt;&gt; from matplotlib.font_manager import FontProperties      #导入字体</span><br><span class="line">&gt;&gt; font_set = FontProperties(fname=r&apos;c:\windows\fonts\simsun.ttc&apos;,size=15)  #字体实例</span><br><span class="line">&gt;&gt; ax.set_ylabel(u&apos;x轴标签&apos;,fontproperties = font_set)    #散点图的字体设置</span><br><span class="line">&gt;&gt; ax.legend(prop = font_set)      #图例的字体设置</span><br></pre></td></tr></table></figure></p>
+<h3 id="【补充】用sklearn实现knn算法，用学习曲线评估"><a href="#【补充】用sklearn实现knn算法，用学习曲线评估" class="headerlink" title="【补充】用sklearn实现knn算法，用学习曲线评估"></a>【补充】用sklearn实现knn算法，用学习曲线评估</h3><p>sklearn.neighbors.<strong>KNeighborsClassifier</strong>(n_neighbors=3, weights=’uniform’, algorithm=’auto’, leaf_size=30, p=2, metric=’minkowski’, metric_params=None)<br>　　①<strong>n_neighbors</strong>　k值<br>　　②<strong>weights</strong>　临近实例的权重，可以取三个值 ‘uniform’是默认→权重相同的情况，’distance’权重与距离成反比、自定义函数对权值进行设定<br>　　③<strong>algorithm</strong>　可以取4个值，’auto’、’ball_tree’、’kd_tree’、’brute’<br>　　④<strong>leaf_size</strong>　ball_tree和kd_tree树的叶子数量<br>　　⑤<strong>p</strong>　距离度量的p值<br>　　⑥<strong>metric</strong>　距离度量的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.neighbors import KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">#提取数据并归一化</span><br><span class="line">X,y_train = file2matrix(&apos;datingTestSet2.txt&apos;)</span><br><span class="line">X_train ,_ ,_= autoNorm(X)</span><br><span class="line"></span><br><span class="line">#创建knn算法实例</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=3)</span><br></pre></td></tr></table></figure></p>
+<p>sklearn.learning_curve.<strong>learning_curve</strong>(estimator, X, y, groups=None, train_sizes=array([0.1, 0.33, 0.55, 0.78, 1. ]), cv=’warn’, scoring=None, exploit_incremental_learning=False, n_jobs=None, pre_dispatch=’all’, verbose=0, shuffle=False, random_state=None, error_score=’raise-deprecating’)</p>
+<p>　　①<strong>estimator</strong>　训练器的名称<br>　　②<strong>X</strong>　训练集特征<br>　　③<strong>y</strong>　训练集标签<br>　　④<strong>train_sizes</strong>　划分出的训练集,占总数据集的比例0-1，也可以输入绝对数量<br>　　⑤<strong>cv</strong>　是整型，交叉验证folds的个数，默认是3<br>　　⑥<strong>scoring</strong>　打分函数<br>　　⑦<strong>n_jobs</strong>　并行运行的作业数，默认是1<br>　　⑧<strong>random_state</strong>　整型→随机数生成器使用的种子</p>
+<p>　　有3个返回值：x轴刻度数组、训练集分数(n_ticks, n_cv_folds)、测试集分数(n_ticks, n_cv_folds)。刻度数可能是：不同的样本数、某一参数的不同值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.learning_curve import learning_curve</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line">train_sizes,train_scores,test_scores=learning_curve(estimator=knn,X = X_train, y = y_train, train_sizes = np.linspace(0.1,1.0,10), cv=10, n_jobs = 1)</span><br><span class="line"></span><br><span class="line">train_mean = np.mean(train_scores, axis=1)     #每行的平均值(同一样本量不同folds)</span><br><span class="line">train_std = np.std(train_scores, axis=1)</span><br><span class="line"></span><br><span class="line">test_mean = np.mean(test_scores, axis=1)</span><br><span class="line">test_std = np.std(train_scores, axis=1)</span><br><span class="line"></span><br><span class="line">param_range = np.linspace(0.1,1.0,10)      #训练集的比重</span><br><span class="line">plt.plot(train_sizes, train_mean, color=&apos;blue&apos;, marker=&apos;o&apos;, markersize=5,label=&apos;training accuracy&apos;)</span><br><span class="line">plt.fill_between(train_sizes,train_mean+train_std, train_mean-train_std, alpha=0.15, color=&apos;blue&apos;)      #填充两个数据集之间的区域</span><br><span class="line"></span><br><span class="line">plt.plot(train_sizes, test_mean, color=&apos;green&apos;, marker=&apos;s&apos;,linestyle=&apos;--&apos;, markersize=5,label=&apos;test accuracy&apos;)</span><br><span class="line">plt.fill_between(train_sizes,test_mean+test_std, test_mean-test_std, alpha=0.15, color=&apos;green&apos;)</span><br><span class="line"></span><br><span class="line">plt.grid()</span><br><span class="line">plt.ylim([0.8, 1.0])</span><br><span class="line">plt.legend(loc=&apos;lower right&apos;)</span><br><span class="line">plt.xlabel(&apos;Number os training samples&apos;)</span><br><span class="line">plt.ylabel(&apos;Accuracy&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>　　<img src="/2018/05/01/改进约会网站的配对效果（k近邻）/学习曲线.png" alt="学习曲线"><br>　　训练集和测试集的准确率收敛，并且都很高。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>
