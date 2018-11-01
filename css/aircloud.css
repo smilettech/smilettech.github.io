@@ -630,13 +630,13 @@ body {
 }
 .post-content p {
   color: #4a4a4a;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 30px;
   text-indent: 2em;
   letter-spacing: 1px;
 }
 .post-content p img {
-  width: 80%;
+  width: 100%;
 }
 .post-content ul,
 .post-content ol {
