@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        清洗数据 - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、了解数据"><span class="toc-text">一、了解数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、清洗数据"><span class="toc-text">二、清洗数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、缺失值处理"><span class="toc-text">1、缺失值处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、不一致数据的处理"><span class="toc-text">2、不一致数据的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、删除重复项"><span class="toc-text">3、删除重复项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、文本转为数值类型"><span class="toc-text">4、文本转为数值类型</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        清洗数据
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-03 20:35:19</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#数据分析" title="数据分析">数据分析</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <p>对“数据分析师职位招聘分析”所收集的数据进行清洗</p>
+<h2 id="一、了解数据"><a href="#一、了解数据" class="headerlink" title="一、了解数据"></a>一、了解数据</h2><p>　　部分数据如下所示：<br><img src="/2018/11/03/清洗数据/表格.png" alt="表格"><br>　　考虑到英文比汉字更适合编程环境，所以数据源的字段名都是英文，各个字段的含义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">city 城市</span><br><span class="line">district 市辖区</span><br><span class="line">companyShortName 公司简称</span><br><span class="line">companySize 公司规模</span><br><span class="line">companyId 公司ID</span><br><span class="line">financeStage 融资阶段</span><br><span class="line">industryField 公司所属领域</span><br><span class="line">positionName 职位名称</span><br><span class="line">firstType 职位所属一级类目</span><br><span class="line">secondType 职位所属二级类目</span><br><span class="line">thirdType 职位所属三级类目</span><br><span class="line">education 学历要求</span><br><span class="line">workYear 工作年限要求</span><br><span class="line">salary 薪水</span><br></pre></td></tr></table></figure></p>
+<h2 id="二、清洗数据"><a href="#二、清洗数据" class="headerlink" title="二、清洗数据"></a>二、清洗数据</h2><p>　　首先新建一个sheet，将原始数据复制过来，在新建的sheet中进行数据清洗操作。</p>
+<h3 id="1、缺失值处理"><a href="#1、缺失值处理" class="headerlink" title="1、缺失值处理"></a>1、缺失值处理</h3><p>　　通过选取该字段，在屏幕的左下角查看计数来查看每个字段是否存在缺失值。结果发现district（缺失20个）、companySize(缺失1个)、financeStage(缺失1个)、industryField(缺失1个)，<br>（1）定位缺失值的方法<br>　　方法1：按ctrl+G打开定位对话框，选择”空值”并点击”确定”<br>　　方法2：用筛选功能，点击下拉箭头，只选择”空白”<br>（2）填充缺失值<br>　　①这里我通过搜索公司信息，手动填充对应的district信息；<br>　　②其它缺失信息都属于一家公司的分公司，忽略</p>
+<h3 id="2、不一致数据的处理"><a href="#2、不一致数据的处理" class="headerlink" title="2、不一致数据的处理"></a>2、不一致数据的处理</h3><p>　　通过筛选查看数据，发现以下几种数据不一致的情况：<br>　　（1）公司领域字段：”O2O ,生活服务”与”O2O,生活服务”是一类，但被归为两种不同的类，只是因为一个空格的差别；因为有二级类目所以该字段划分了很多类别，这里我只保留一级类别。<br>　　方法：在该列后面插入一列(否则分列后会覆盖右边字段的数据)，”数据”→”分列”→选择分隔符号：空格、逗号、顿号<br>　　（2）职位类目的三个字段：将”/“改为”|”</p>
+<h3 id="3、删除重复项"><a href="#3、删除重复项" class="headerlink" title="3、删除重复项"></a>3、删除重复项</h3><p>　　重复项是指在每个字段（或选定字段）都有相同的内容。删除重复项的方法如下<br>　　方法一：”数据”→”删除重复项”→选择重复数据所在的列→点击确定，就会自动得到删除重复项之后的数据，删除的空白行也会自动由下方数据填补<br>　　方法二：”筛选”→”高级筛选”→勾上”选择不重复的记录”<br>　　这里采用方法一，找到513条重复项，删除后将保留3526条唯一项。</p>
+<h3 id="4、文本转为数值类型"><a href="#4、文本转为数值类型" class="headerlink" title="4、文本转为数值类型"></a>4、文本转为数值类型</h3><p>　　薪水用”几K到几k”的形式表示，是一个文本字符串，我需要将它的数值（最高薪水、最低薪水）提取出来，用来计算平均工资，用这个平均数作为该岗位的薪水。将salary拆成最高薪水和最低薪水的方法：<br>　　方法一：直接分列。”数据”→”分列”，以”-“为分割符，得到两列数据，再利用替换功能删除k这个字符串得到结果<br>　　方法二：用公式。先用SEARCH(“k”,N2)查找第一个k出现的位置①，LEFT(N2,位置①-1)就得到最低薪水值；用SEARCH(“-“,N2)查找”-“的位置②，最高薪水MID(N2,位置②+1,LEN(N2)-位置②-1)<br>　　最终的公式是：<br>　　　最低薪水 = LEFT(N2,SEARCH(“k”,N2)-1)<br>　　　最高薪水 = MID(N2,SEARCH(“-“,N2)+1,LEN(N2)-SEARCH(“-“,N2)-1)<br>　　最终结果如下图所示：<br><img src="/2018/11/03/清洗数据/拆分.png" alt="拆分"><br>　　用到的函数如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SEARCH(查找的文本,文本所在的单元格,从第几个字符开始找默认是1)</span><br><span class="line">用来对原始数据中某个字符串进行定位,以确定其位置。</span><br><span class="line">SEARCH函数进行定位时,总是从指定位置开始,返回找到的第一个匹配字符串的位置。</span><br><span class="line">FIND函数用法相同，只是FIND对大小写敏感，SEARCH忽略大小写</span><br><span class="line"></span><br><span class="line">LEFT(单元格,从左开始截取几个字符)</span><br><span class="line">用来对单元格内容进行截取。从左边第一个字符开始截取，截取指定的长度</span><br><span class="line"></span><br><span class="line">MID(单元格,从第几个字符开始提取,提取几个字符)</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>
