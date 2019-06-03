@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        识别手写数字（k近邻） - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决思路与代码"><span class="toc-text">解决思路与代码</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        识别手写数字（k近邻）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-03 15:26:53</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习实战" title="机器学习实战">机器学习实战</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <p>　　简单起见，这里构造的系统只能识别数字0到9</p>
+<h3 id="解决思路与代码"><a href="#解决思路与代码" class="headerlink" title="解决思路与代码"></a>解决思路与代码</h3><p>（1）收集数据<br>　　目录trainingDigits中包好了2000左右个例子（用这些实例训练分类器），部分例子如下图所示。[注释：需要识别的数字已经经过图形处理软件，处理成具有相同色彩和大小(32×32像素的黑白图像)，每个数字大约200个样本。为了方便理解，我们把图像转换为文本格式]<br>　　<img src="/2018/05/03/识别手写数字（k近邻）/手写.png" alt="手写"><br>　　目录testDigits中包好了大约900个测试数据（用这些实例测试分类器的效果），两个目录的数据没有重复。<br>（2）准备数据<br>　　编写函数img2vector，将一个32×32的二进制图像转换成1×1024的numpy数组（即每个图像有1024个特征）<br>　　如何转换？打开文件→循环读出每一行→将每行的元素存储在numpy数组中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def img2vector(filename):</span><br><span class="line">    x_vec = np.zeros((1,1024))       #初始化图像向量，全为0</span><br><span class="line">    fr = open(filename)       #打开文件</span><br><span class="line">    for i in range(32):</span><br><span class="line">        frline = fr.readline()       #每次执行到这，就读取一行（一共32行）</span><br><span class="line">        for j in range(32):       #遍历该行中每列的元素（一共32个元素）</span><br><span class="line">            x_vec[0,32*i+j] = int(frline[j])       #一个元素一个元素地赋值</span><br><span class="line">    return x_vec</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; x_vec = imgvector(&apos;testDigits/0_13.txt&apos;)</span><br><span class="line">&gt;&gt; x_vec[0,:30]</span><br><span class="line">array([ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,</span><br><span class="line">        0.,  1.,  1.,  1.,  1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,</span><br><span class="line">        0.,  0.,  0.,  0.])</span><br></pre></td></tr></table></figure>
+<p>（5）评估模型<br>　　[模型介绍等详细内容见“<a href="https://smilettech.github.io/2018/05/01/%E6%94%B9%E8%BF%9B%E7%BA%A6%E4%BC%9A%E7%BD%91%E7%AB%99%E7%9A%84%E9%85%8D%E5%AF%B9%E6%95%88%E6%9E%9C%EF%BC%88k%E8%BF%91%E9%82%BB%EF%BC%89/">改进约会网站的配对效果</a>”]<br>　　先编写函数featurelabel()，用来构造数据集的特征矩阵、标签向量<br>　　再编写函数classtest()，将测试数据输入到分类器，评估分类器的效果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from os import listdir</span><br><span class="line">def featurelabel(filename):</span><br><span class="line">    fr_list = listdir(filename)        #列出给定目录的文件名</span><br><span class="line">    fr_num = len(fr_list)        #文件数量，即样本个数</span><br><span class="line">    X = np.zeros((fr_num, 1024))        #初始化训练集特征矩阵</span><br><span class="line">    y = []        #初始化标签向量</span><br><span class="line"></span><br><span class="line">    for i in range(fr_num):         #遍历每一个样本</span><br><span class="line">        fr_name = fr_list[i]          #样本文件的名字，比如0_0.txt</span><br><span class="line">        y_str = fr_name.split(&apos;.&apos;)[0].split(&apos;_&apos;)[0]          #提取每个样本对应的标签</span><br><span class="line">        y = y.append(int(y_str))</span><br><span class="line">        X[i,:] = img2vector(&apos;%s/%s&apos; % (filename, fr_name) )         #每一行的特征</span><br><span class="line">    return X, y</span><br></pre></td></tr></table></figure></p>
+<p>　　代码问题：a=a.append(b)是错误写法。因为append方法没有返回值，即a=a.append(b)会执行成功，并将a赋值为None；第二次调用就会报错 → ‘NoneType’ object has no attribute ‘append’，因为None是不能调.append方法的。只写a.append(b)就可以了，不要接返回值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def classtest():</span><br><span class="line">    X_train, y_train = featurelabel(&apos;trainingDigits&apos;)</span><br><span class="line">    X_test, y_test = featurelabel(&apos;testDigits&apos;)</span><br><span class="line">    error_count = 0.0</span><br><span class="line">    m = len(X_test)</span><br><span class="line">    for i in range(m):</span><br><span class="line">        y_result = knnFunc(X_test[i], X_train, y_train, 3)</span><br><span class="line">        if(y_result != y_test[i]):</span><br><span class="line">            error_count += 1</span><br><span class="line">    error_rate = error_count / m</span><br><span class="line">    print(&apos;total number of errors is: %d&apos; % error_count)</span><br><span class="line">    print(&apos;error rate is: %f &apos; % error_rate)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; classtest()</span><br><span class="line">total number of errors is: 10</span><br><span class="line">error rate is: 0.010571</span><br></pre></td></tr></table></figure>
+<p>　　knn算法是一种时间复杂度、空间复杂度很大的算法。比如这个例子的执行效率就很慢，因为它要经过以下运算：一共大约900个测试样本，对每个测试样本做2000次距离计算，每个距离计算包括了1024个维度浮点运算。另外，我们还需要为测试向量准备2MB的存储空间。<br>　　<strong>总结：</strong>k近邻算法是基于实例的学习，如果训练集很大,则必须使用大量的存储空间，而且必须对每个样本数据点计算距离，实际使用时非常耗时。它的另一个缺点是：无法给出数据的基础结构信息，不知道与测试数据相近的训练数据有什么特征（可以用决策树解决）</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>

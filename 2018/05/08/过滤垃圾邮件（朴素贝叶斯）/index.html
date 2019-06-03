@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        过滤垃圾邮件（朴素贝叶斯） - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）先将文本转换为词向量"><span class="toc-text">（1）先将文本转换为词向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）计算文本属于某类的概率"><span class="toc-text">（2）计算文本属于某类的概率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码实现"><span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）用词袋模型，将文本转换成词向量"><span class="toc-text">（1）用词袋模型，将文本转换成词向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）构建模型：利用训练集计算先验、条件概率"><span class="toc-text">（2）构建模型：利用训练集计算先验、条件概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（3）计算后验概率，预测新邮件的类型"><span class="toc-text">（3）计算后验概率，预测新邮件的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（4）评估模型：计算误分类率"><span class="toc-text">（4）评估模型：计算误分类率</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        过滤垃圾邮件（朴素贝叶斯）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-08 22:18:39</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习实战" title="机器学习实战">机器学习实战</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <p>　　文本分类是非常重要的机器学习应用，朴素贝叶斯是是用于文本分类的常用算法。</p>
+<h3 id="（1）先将文本转换为词向量"><a href="#（1）先将文本转换为词向量" class="headerlink" title="（1）先将文本转换为词向量"></a>（1）先将文本转换为词向量</h3><p>　　【方法1】词集模型(sef-of-words model)<br>　　（如下图所示）整个文档是一个样本，根据观察文档中出现的词条，把每个词条的出现或不出现作为一个特征，这样得到的特征数目就跟词汇表中的词目一样多。其中<strong>词条</strong>是指字符的任意组合,可以是单词,也可以是非单词（比如URL、IP地址或任意字符串）<br>　　<img src="/2018/05/08/过滤垃圾邮件（朴素贝叶斯）/词条向量.png" alt="词条向量"><br>　　缺点：在词集中每个词只能出现一次。如果一个词在文本中出现不止一次，那么该模型就无法表达出这一信息，可以用词袋模型来解决。<br>　　【方法2】词袋模型(bag-of-words model)<br>　　它与词集模型唯一不同的是：每当遇到一个单词时，就会增加词向量中对应的值，而不只是将对应的数值设为1。</p>
+<h3 id="（2）计算文本属于某类的概率"><a href="#（2）计算文本属于某类的概率" class="headerlink" title="（2）计算文本属于某类的概率"></a>（2）计算文本属于某类的概率</h3><p>　　<em>先验概率p(ci)</em>：看文本内容之前，仅从收集的文本中有多少是某类的文本,推测某类的概率<br>　　<em>条件概率p(w|ci)</em>：也称为似然函数，表示某类生成我们观测到的词条的可能性<br>　　<em>后验概率p(ci|w)</em>：看过文本内容后，对先验概率进行修正，能够针对不同的文本推测出它属于某一类别的概率，高概率对应的类别就是预测结果（体现出贝叶斯决策理论的核心思想）<br>　　通过计算先验概率、条件概率训练NB分类器，然后用下图的公式计算后验概率,预测类别<br>　　<img src="/2018/05/08/过滤垃圾邮件（朴素贝叶斯）/计算概率.png" alt="计算概率"><br>　　朴素贝叶斯分类器有2个假设：①特征之间相互独立（即一个特征或单词出现的可能性与它和其他单词相邻没有关系）②每个特征同等重要<br>　　这2个假设都有问题，①比如bacon出现在unhealthy后面，与出现在delicious后面的概率显然不同，因为bacon经常出现在delicious附近 ②比如要判断留言板的留言是否得当，那么可能不需要看完所有的1000个单词，只需要看10~20个特征就能做出判断了。<em>尽管上述述假设存在一些小的瑕疵，但朴素贝叶斯的实际效果却很好。</em></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>　　先统一好变量命名：<br>　　　　①一个文本整体的字符串：textstring<br>　　　　②一个文本的单词列表：wordlist<br>　　　　③一个文本的词向量：wordvec<br>　　　　④多个文本的单词列表：wordlists<br>　　　　⑤多个文本的词向量：wordvecs<br>　　　　⑥词汇表：vocablist<br>　　　　⑦每个文本对应的标签向量label</p>
+<h3 id="（1）用词袋模型，将文本转换成词向量"><a href="#（1）用词袋模型，将文本转换成词向量" class="headerlink" title="（1）用词袋模型，将文本转换成词向量"></a>（1）用词袋模型，将文本转换成词向量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#词袋模型</span><br><span class="line">#输入：词汇表、文本列表；     输出：词向量</span><br><span class="line">def bagOfWords(vocablist, wordlist):</span><br><span class="line">    wordvec = [0] * len(vocablist)</span><br><span class="line">    for word in wordlist:</span><br><span class="line">        if word in vocablist:</span><br><span class="line">            wordvec[vocablist.index(word)] += 1      #word在词汇表中的位置</span><br><span class="line">    return wordvec</span><br></pre></td></tr></table></figure>
+<p>　　词袋模型需要传入两个列表，由以下两个函数生成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 构建词汇表</span><br><span class="line">def createVocabList(wordlists):</span><br><span class="line">    vocabset = set()       #创建空的集合</span><br><span class="line">    for doc in wordlists:         #读取整个数据集的唯一单词</span><br><span class="line">        vocabset = vocabset | set(doc)      #取并集</span><br><span class="line">    return list(vocabset)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#构建文本列表，从文本内容中得到字符串列表</span><br><span class="line">#需要多尝试几次，确保所有单词都是统一的形式（全部小写、没有空字符、没有标点符号等）</span><br><span class="line">def textParse(textstring):</span><br><span class="line">    import re</span><br><span class="line">    wordlist = re.split(r&apos;\W*&apos;, textstring)       #或者re.compile(r&apos;\W*&apos;).split(textstring)，分隔符是除了单词、数字之外的任意字符串</span><br><span class="line">    wordlist = [word.lower() for word in wordlist if len(word) &gt; 2]      #将不超过2个字符的字符串也过滤掉，比如is、an、I等</span><br><span class="line">    return wordlist</span><br></pre></td></tr></table></figure>
+<h3 id="（2）构建模型：利用训练集计算先验、条件概率"><a href="#（2）构建模型：利用训练集计算先验、条件概率" class="headerlink" title="（2）构建模型：利用训练集计算先验、条件概率"></a>（2）构建模型：利用训练集计算先验、条件概率</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">wordvec</span><br><span class="line">def trainNB(wordvecs, label):</span><br><span class="line">    m = len(wordvecs)        #文件总数（样本数）</span><br><span class="line">    n = len(wordvecs[0])        #词条总数（特征数）</span><br><span class="line">    p1_prior = sum(label) / m         #类别为1的文本概率，sum(label)是类别为1的文本数</span><br><span class="line"></span><br><span class="line">    array1 = np.ones(n)   #用来统计每个单词在某类中出现的次数：用一个numpy矩阵存储出现的次数</span><br><span class="line">    array0 = np.ones(n)</span><br><span class="line">    total1 = 2.0       #用来统计某一类中所有出现单词的总数</span><br><span class="line">    total0 = 2.0</span><br><span class="line"></span><br><span class="line">    for i in range(m):       #遍历每个样本</span><br><span class="line">        if label[i] == 1:            #如果这个样本的类别是1</span><br><span class="line">            array1 += wordvecs[i]            #统计每个单词出现的次数</span><br><span class="line">            total1 += sum(wordvecs[i])            #统计所有出现单词的总数</span><br><span class="line">        else:            #如果这个样本的类别是0</span><br><span class="line">            array0 += wordvecs[i]</span><br><span class="line">            total0 += sum(wordvecs[i])</span><br><span class="line">    pw1 = np.log(array1 / total1)</span><br><span class="line">    pw0 = np.log(array0 / total0)</span><br><span class="line">    return pw0, pw1 ,p1_prior       #返回条件概率、先验概率</span><br></pre></td></tr></table></figure>
+<p>　　上面的代码解决了计算条件概率时的两个弊端：<br>　　　①条件概率要计算多个概率的乘积，如果有一个概率值为0，那么最后的结果也是0。解决：将所有词的出现数初始化为1，并将分母初始化为2<br>　　　②用Python对多个很小的数相乘，最后四舍五入为0。解决：对乘积取自然对数ln(a*b)=ln(a)+ln(b)，因为f(x)与lnf(x)在相同的区域内同时增加、同时减少，并且在相同点上取极值，虽然除了极值点的其它点取值不同，但不影响最终结果，所以可以进行对数变换。</p>
+<h3 id="（3）计算后验概率，预测新邮件的类型"><a href="#（3）计算后验概率，预测新邮件的类型" class="headerlink" title="（3）计算后验概率，预测新邮件的类型"></a>（3）计算后验概率，预测新邮件的类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#输入一个新的词向量</span><br><span class="line">def classifyNB(wordvec, pw0, pw1, p1_prior):</span><br><span class="line">    p1 = np.sum(wordvec * pw1) + np.log(p1_prior)      #计算新文本的后验概率的分子</span><br><span class="line">    p0 = np.sum(wordvec * pw0) + np.log(1 - p1_prior)</span><br><span class="line">    y_pred = 0</span><br><span class="line">    if p1 &gt; p0:</span><br><span class="line">        y_pred = 1</span><br><span class="line">    return y_pred        #返回预测结果</span><br></pre></td></tr></table></figure>
+<h3 id="（4）评估模型：计算误分类率"><a href="#（4）评估模型：计算误分类率" class="headerlink" title="（4）评估模型：计算误分类率"></a>（4）评估模型：计算误分类率</h3><p>　　电子邮件放在email文件夹，该文件夹又包含2个子文件夹，分别是spam(垃圾邮件)、ham(正常邮件)，各有25封邮件，文件名是1到25<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">def spamTest():</span><br><span class="line">    wordlists = []     #之后放入所有邮件（包括ham、spam）</span><br><span class="line">    label = []</span><br><span class="line">    for i in range(1,26):        #遍历25个邮件</span><br><span class="line">        wordlist = textParse(open(&apos;email/spam/%d.txt&apos; % i).read())      #打开文件，读取整个邮件内容存入一个字符串，然后进行文本解析，得到单词列表</span><br><span class="line">        wordlists.append(wordlist)</span><br><span class="line">        label.append(1)      #是垃圾邮件</span><br><span class="line"></span><br><span class="line">        wordlist = textParse(open(&apos;email/ham/%d.txt&apos; % i).read())</span><br><span class="line">        wordlists.append(wordlist)</span><br><span class="line">        label.append(0)      #是正常邮件</span><br><span class="line"></span><br><span class="line">    vocablist = createVocabList(wordlists)       #构建词汇列表</span><br><span class="line"></span><br><span class="line">    train_index = list(range(50))      #这一部分是为了生成随机索引，随机选取测试文本</span><br><span class="line">    test_index = []</span><br><span class="line">    for i in range(10):       #随机选择10封邮件,range函数返回一个迭代器</span><br><span class="line">        random_index = int(random.uniform(0,len(train_index)))</span><br><span class="line">        test_index.append( train_index[random_index] )</span><br><span class="line">        del( train_index[random_index] )</span><br><span class="line"></span><br><span class="line">    X_train = []       #训练集的特征矩阵、类别</span><br><span class="line">    y_train = []</span><br><span class="line">    for i in train_index:         #遍历训练集索引,训练模型</span><br><span class="line">        X_train.append( bagOfWords(vocablist, wordlists[i]))       #词袋模型，将文本变为词向量</span><br><span class="line">        y_train.append( label[i] )       #提取对应的类别</span><br><span class="line"></span><br><span class="line">    pw0, pw1, p_prior = trainNB(X_train, y_train)       #得到先验、条件概率</span><br><span class="line">    errorCount = 0        #定义误分类数</span><br><span class="line"></span><br><span class="line">    for i in test_index:         #遍历测试集,做预测</span><br><span class="line">        wordvec = bagOfWords(vocablist, wordlists[i])        #生成词向量</span><br><span class="line">        y = classifyNB(wordvec, pw0, pw1, p_prior)</span><br><span class="line">        if y != label[i]:</span><br><span class="line">            errorCount += 1</span><br><span class="line">            print(&quot;predcit: %s，label: %s&quot; %(y,label[i]))</span><br><span class="line">    print(&apos;the error rate is: &apos;,errorCount/len(test_index))</span><br></pre></td></tr></table></figure></p>
+<p>　　代码问题及解决方法：执行open(….)时，出现错误“UnicodeDecodeError: ‘gbk’ codec can’t decode byte 0xae in position 199: illegal multib”，说明文字中某个字节不能解码，即文件中包含了非法字符。循环遍历后发现是ham/23.txt中有个问号字符，删除它就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; spamTest()</span><br><span class="line">the error rate is:  0.0</span><br><span class="line"></span><br><span class="line">&gt;&gt; spamTest()       #每次可能会得到不同的结果（因为测试集是随机抽取的）</span><br><span class="line">predcit: 1，label: 0</span><br><span class="line">predcit: 1，label: 0</span><br><span class="line">the error rate is:  0.2</span><br></pre></td></tr></table></figure></p>
+<p>　　重复运行多次后发现，错误一直都是：将正常邮件误判为垃圾邮件。相比之下，将垃圾邮件误判为正常邮件,比将正常邮件误判为垃圾邮件要好。为了避免错误，有很多方法可以用来修正分类器，之后再讨论。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>

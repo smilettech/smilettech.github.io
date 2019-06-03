@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        从疝气病症预测病马的生存率（逻辑回归） - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Logistic回归"><span class="toc-text">Logistic回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑回归的命名"><span class="toc-text">逻辑回归的命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑回归的模型表示"><span class="toc-text">逻辑回归的模型表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#判定边界"><span class="toc-text">判定边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#损失函数"><span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#梯度下降法"><span class="toc-text">梯度下降法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-预处理"><span class="toc-text">1. 预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-用逻辑回归进行分类"><span class="toc-text">2. 用逻辑回归进行分类</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        从疝气病症预测病马的生存率（逻辑回归）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-12 21:33:15</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习实战" title="机器学习实战">机器学习实战</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <h2 id="Logistic回归"><a href="#Logistic回归" class="headerlink" title="Logistic回归"></a>Logistic回归</h2><p>　　逻辑回归是一种分类算法，常用来处理二分类问题。</p>
+<h3 id="逻辑回归的命名"><a href="#逻辑回归的命名" class="headerlink" title="逻辑回归的命名"></a>逻辑回归的命名</h3><p>　　逻辑回归的命名有一定的历史原因。该方法最早由统计学家David Cox在1958年提出，当时人们对于回归和分类的定义跟今时不太一样，作者只是沿用了回归这个名字。<br>　　<strong>当时</strong>：p(y=1|x)是预测样本x为正样本的概率，几率(odds)是事件发生的概率与事件不发生的概率的比值，即p/(1-p)。因为逻辑回归可以写成log[p/(1-p)]=θTx，所以逻辑回归可以看作对y=1这一事件的对数几率的线性回归。<br>　　<strong>今时</strong>：而现在对于逻辑回归的讨论，我们都认为y是因变量，而不是p/(1-p)，这是逻辑回归与线性回归最大的区别，即逻辑回归中的因变量是离散的，而线性回归中的因变量是连续的。实际上，逻辑回归模型学习得到的是y=1的概率期望，而线性回归中实际上求解的是对我们假设的真实关系y=wx+b的一个近似。</p>
+<h3 id="逻辑回归的模型表示"><a href="#逻辑回归的模型表示" class="headerlink" title="逻辑回归的模型表示"></a>逻辑回归的模型表示</h3><p><img src="/2018/05/12/从疝气病症预测病马的生存率（逻辑回归）/原理.png" alt="原理"></p>
+<h3 id="判定边界"><a href="#判定边界" class="headerlink" title="判定边界"></a>判定边界</h3><p>　　判定边界用于理解逻辑回归的模型表示，即它是如何对数据进行分类的。在逻辑回归中，我们预测：当h&gt;=0.5时,y=1，当h<0.5时,y=0，根据s型函数图像,可以得到z>=0时,h&gt;=0.5，z&lt;0时,h&lt;0.5，所以最终得到$w^Tx≥0$时预测y为1，$w^Tx&lt;0$时预测y为0<br>　　比如我们的数据呈现以下两种分布，用什么模型才适合呢？<br>　　<img src="/2018/05/12/从疝气病症预测病马的生存率（逻辑回归）/判定边界.png" alt="判定边界"><br>　　左图：可以用线性模型分割，$h_θ(x)=g(θ_0+θ_1x_1+θ_2x_2)$，$θ=(-3,1,1)^T$，则当$-3+x_1+x_2≥0$时模型将预测y=1，画出直线$x_1+x_2=3$就是模型的分界线，它将预测为1的区域和预测0的区域分割开<br>　　右图：需要用曲线才能分隔开，用二次方特征，$h_θ(x)=g(θ_0+θ_1x_1+θ_2x_2+θ_3x_1^2+θ_4x_2^2)$，$θ=(-1,0,0,1,1)^T$，得到的判定边界是以(0,0)为原点,半径为1的圆</0.5时,y=0，根据s型函数图像,可以得到z></p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>　　线性回归模型的损失函数,是误差的平方和。如果逻辑回归模型也用这个损失函数，将$g(x)=\frac{1}{1+e^{-w^Tx}}$代入后得到的损失函数是一个非凸函数，即损失函数有很多局部最小值。<br>　　重新定义逻辑回归的损失函数：<script type="math/tex">J(w)=\frac{1}{m}\sum_{i=1}^{m}Cost(g(x^{(i)}),y^{(i)})</script>，其中当实际y=1时Cost(h,y)=-ln(h)，当实际y=0时Cost(h,y)=-ln(1-h)<br>　　简化后得：<script type="math/tex">Cost(g(x),y)=-y\times\ln(g(x))-(1-y)\times\ln(1-g(x))</script><br>　　代入损失函数得：<script type="math/tex">J(w)=-\frac{1}{m}\sum_{i=1}^{m}[y^{(i)}\ln(g(x^{(i)}))+(1-y^{(i)})\ln(1-g(x^{(i)}))]</script></p>
+<h3 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h3><p>　　梯度下降法是一种最优化方法，<br>可以用来计算使损失函数最小的参数。它的思想是：想找到某函数的最小值(或最大值)，最好的方法是沿着该函数的梯度方向探寻。梯度记为∇<br><img src="/2018/05/12/从疝气病症预测病马的生存率（逻辑回归）/梯度.png" alt="梯度"></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>　　用逻辑回归来预测患有疝病的马的生存问题，从一些文献了解到疝病是描述马肠胃病的属于，但是这种病不一定源自马的胃肠问题，也有可能是其他问题引起的。<br>　　数据集包括368个样本和28个特征，包括医院检测马疝病的一些指标，有的指标比较主观，有的指标难以测量，比如马的疼痛级别。现在先对数据集进行预处理，使数据可以顺利地使用分类算法。</p>
+<h3 id="1-预处理"><a href="#1-预处理" class="headerlink" title="1. 预处理"></a>1. 预处理</h3><p>　<strong>（1）填充特征的缺失值</strong><br>　　有时数据相当昂贵，扔掉和重新获取都是不可取的，所以必须采用一些方法来解决，比如：①使用可用特征的均值填充 ②使用相似样本的均值填充 ③用特殊值填充，比如-1 ④用机器学习算法预测缺失值 ⑤忽略有缺失值的样本<br>　　这里我们用特殊值0填充，这么做的直觉是：①可以保留现有数据；②不需要对优化算法进行修改，因为在更新时x=0不会影响该特征对应的w值（w:=w-α<em>error</em>x）；③对预测结果也没有任何倾向性（Sigmoid(0)=0.5）<br>　<strong>（2）删除标签缺失的样本</strong><br>　　标签与特征不同，很难用合适的值来填充。用逻辑回归进行分类时这么做是合理的，但是采用KNN算法这么做就不太可行。</p>
+<h3 id="2-用逻辑回归进行分类"><a href="#2-用逻辑回归进行分类" class="headerlink" title="2. 用逻辑回归进行分类"></a>2. 用逻辑回归进行分类</h3><p>（1）逻辑回归的函数形式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># p1 = sigmoid(z)</span><br><span class="line"># z = Xw，X是m×(n+1)的特征矩阵、w是(n+1)维的系数向量</span><br><span class="line"># p1&gt;0.5则归为类1；p1&lt;0.5则归为类0</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">def sigmoid(z):</span><br><span class="line">    return 1.0/(1+np.exp(-z))</span><br><span class="line"></span><br><span class="line">def classifyLR(X, w):</span><br><span class="line">    p1 = sigmoid( np.sum( X * w ) )</span><br><span class="line">    if p1 &gt; 0.5:</span><br><span class="line">        return 1.0</span><br><span class="line">    else:</span><br><span class="line">        return 0.0</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>

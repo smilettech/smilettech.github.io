@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        scrapy爬虫基础1：创建项目、定义Item - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、Scrapy框架结构"><span class="toc-text">一、Scrapy框架结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、构建scrapy爬虫项目的基本步骤"><span class="toc-text">二、构建scrapy爬虫项目的基本步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、创建项目"><span class="toc-text">1、创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、定义保存数据的容器Item"><span class="toc-text">2、定义保存数据的容器Item</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义Item"><span class="toc-text">定义Item</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建BookItem对象"><span class="toc-text">创建BookItem对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对字段进行赋值"><span class="toc-text">对字段进行赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问BookItem对象中的字段"><span class="toc-text">访问BookItem对象中的字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用元数据-Field-给其他组件传递信息"><span class="toc-text">使用元数据(Field)给其他组件传递信息</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        scrapy爬虫基础1：创建项目、定义Item
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-08-12 16:44:04</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#爬虫" title="爬虫">爬虫</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <h1 id="一、Scrapy框架结构"><a href="#一、Scrapy框架结构" class="headerlink" title="一、Scrapy框架结构"></a>一、Scrapy框架结构</h1><p>　　<img src="/2018/08/12/scrapy爬虫基础1创建项目和定义Item/爬虫框架.png" alt="爬虫框架"></p>
+<h1 id="二、构建scrapy爬虫项目的基本步骤"><a href="#二、构建scrapy爬虫项目的基本步骤" class="headerlink" title="二、构建scrapy爬虫项目的基本步骤"></a>二、构建scrapy爬虫项目的基本步骤</h1><p>步骤：①创建项目<br>　　　②定义保存数据的容器Item<br>　　　③编写提取数据的爬虫Spider<br>　　　④构建处理数据的流水线Pipeline</p>
+<h2 id="1、创建项目"><a href="#1、创建项目" class="headerlink" title="1、创建项目"></a>1、创建项目</h2><p>　<strong>创建项目之前需要做的准备工作：</strong><br>　　①明确项目需求：在哪个网站的哪些数据<br>　　②页面分析：从大框架找小框架。比如提取图书馆网页的书籍信息(书籍列表页面→书籍框架→名称/价格/作者等)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ①书籍列表页面→书籍框架：使用scrapy shell命令下载页面，然后用view函数在浏览器中查看下载后的页面</span><br><span class="line">#运行之后,网页会被下载到response对象中,可以用来调试XPath或CSS→得到正确的表达式</span><br><span class="line"></span><br><span class="line">&gt;&gt;scrapy shell http://books.toscrape.com/</span><br><span class="line">&gt;&gt;view(response)</span><br><span class="line"># 查看发现所有的书籍框架都在&lt;article class=&quot;product_pod&quot;&gt;..&lt;/article&gt;中</span><br><span class="line"></span><br><span class="line"># ②书籍框架→名称/价格/作者等：可以直接从已下载的页面中找到这些数据</span><br></pre></td></tr></table></figure></p>
+<p>　<strong>创建项目：</strong><br>　　在指定文件夹中新建一个爬虫项目<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;cd 目标文件夹</span><br><span class="line">&gt;&gt;scrapy startproject 项目目录名</span><br><span class="line">&gt;&gt;cd 项目目录名</span><br><span class="line">&gt;&gt;scrapy genspider books books.toscrape.com</span><br><span class="line">#创建一个新的spider。其中books是spider的唯一标识符(每个爬虫项目可以有多个spider文件)，最后是爬虫起点</span><br></pre></td></tr></table></figure></p>
+<p>　　新建完成后，会得到下列文件结构：<br>　　<img src="/2018/08/12/scrapy爬虫基础1创建项目和定义Item/工程目录.png" alt="工程目录"><br>　　【补充】为什么每个文件目录下都有_pycache_？这涉及到Python的运行机制，也就是它不需要编译成二进制代码，而是由解释器直接从源码运行程序。解释器的具体工作是：①加载模块 ②将源码编译为PyCodeObject对象(即字节码),写入内存中 ③从内存中读取并执行字节码,结束后将字节码写回硬盘当中,也就是复制到.pyc或.pyo文件中,以保存当前目录下所有脚本的字节码文件，之后如果想再次执行该脚本,先检查本地是否有字节码文件、该字节码文件的修改时间是否与其脚本一致，如果都满足就直接执行,否则重复上述步骤。</p>
+<h2 id="2、定义保存数据的容器Item"><a href="#2、定义保存数据的容器Item" class="headerlink" title="2、定义保存数据的容器Item"></a>2、定义保存数据的容器Item</h2><p>　　Item是保存爬取到的数据的容器。比如爬取某图书网站的书籍信息，对于每本书可提取书名、价格等，<strong>如果用字典维护这些零散的信息字段,会有以下缺点：</strong>①无法一目了然地了解数据中包含哪些字段,影响代码可读性 ②缺乏对字段名字的检测,容易因程序员的笔误而出错 ③不便于携带元数据（传递给其他组件的信息）。用Item可以解决上述问题。</p>
+<h3 id="定义Item"><a href="#定义Item" class="headerlink" title="定义Item"></a>定义Item</h3><p>　　这里Scrapy提供了两个类：Item基类(自定义数据类的基类)和Field类(用来描述数据类包含哪些字段)。自定义一个数据类，只需继承Item基类，并创建一系列Field对象的类属性即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 书籍信息包含两个字段：书名name、书价price</span><br><span class="line"># 在items.py中实现BookItem类</span><br><span class="line">from scrapy import Item,Field</span><br><span class="line">class BookItem(Item):</span><br><span class="line">    name = Field()</span><br><span class="line">    price = Field()</span><br></pre></td></tr></table></figure></p>
+<p>　　【补充】有时我们可能要对已有的自定义数据类进行拓展，比如项目中又添加了一个新的Spider，负责在其他图书网站爬取国外书籍，书籍信息比之前多了一个译者字段。此时可以继承BookItem,定义一个ForeignBookItem类,在其中添加一个译者字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class ForeignBookItem(BookItem):</span><br><span class="line">    translator = Field()</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建BookItem对象"><a href="#创建BookItem对象" class="headerlink" title="创建BookItem对象"></a>创建BookItem对象</h3><p>　　Item支持字典接口，因此BookItem在使用上和Python字典类似(实际上Field是Python字典的子类)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#方法一：</span><br><span class="line">book1 = BookItem(name=&apos;Needful Things&apos;,price=45.0)</span><br><span class="line">#方法二：</span><br><span class="line">book2 = BookItem()</span><br><span class="line">book2[&apos;name&apos;] = &apos;Life of Pi&apos;</span><br><span class="line">book2[&apos;price&apos;] = 32.5</span><br></pre></td></tr></table></figure></p>
+<h3 id="对字段进行赋值"><a href="#对字段进行赋值" class="headerlink" title="对字段进行赋值"></a>对字段进行赋值</h3><p>　　BookItem内部会检测字段名，如果给一个没有定义的字段赋值，会抛出异常（防止因用户粗心而导致错误）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">book = BookItem()</span><br><span class="line">book[&apos;name&apos;] = &apos;Memoris of a Geisha&apos;</span><br><span class="line">book[&apos;prize&apos;] = 43.0  #粗心，把price拼写成立prize，抛出异常</span><br></pre></td></tr></table></figure></p>
+<h3 id="访问BookItem对象中的字段"><a href="#访问BookItem对象中的字段" class="headerlink" title="访问BookItem对象中的字段"></a>访问BookItem对象中的字段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">book = BookItem(name=&apos;Needful Things&apos;,price=45.0)</span><br><span class="line">book[&apos;name&apos;]    #返回&apos;Needful Things&apos;</span><br><span class="line">book.get(&apos;price&apos;,60.0)    #返回45.0</span><br><span class="line">list(book.items())    #返回[(&apos;price&apos;,45.0),(&apos;name&apos;,&apos;Needful Things&apos;)]</span><br></pre></td></tr></table></figure>
+<h3 id="使用元数据-Field-给其他组件传递信息"><a href="#使用元数据-Field-给其他组件传递信息" class="headerlink" title="使用元数据(Field)给其他组件传递信息"></a>使用元数据(Field)给其他组件传递信息</h3><p>【例1】给其他组件传递额外的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class ExampleItem(Item):</span><br><span class="line">    x = Field(a=&apos;hello&apos;,b=[1,2,3])  x有两个元数据，a是个字符串，b是个列表</span><br><span class="line">    y = Field(a=lambda x:x ** 2)  y有一个元数据，a是个函数</span><br></pre></td></tr></table></figure></p>
+<p>　　访问ExampleItem对象的fields属性，将得到一个字典(包含所有Field对象)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">e = ExampleItem(x=100,y=200)</span><br><span class="line">e.fields   #返回&#123;&apos;x&apos;:&#123;&apos;a&apos;:&apos;hello&apos;,&apos;b&apos;:[1,2,3]&#125;, &apos;y&apos;:&#123;&apos;a&apos;:&lt;function__main__.ExampleItem.&lt;lambda&gt;&gt;&#125;&#125;</span><br><span class="line">type(e.fields[&apos;x&apos;])    #返回scrapy.item.Field</span><br><span class="line">type(e.fields[&apos;y&apos;])    #返回scrapy.item.Field</span><br><span class="line">issubclass(Field,dict)    #返回True</span><br><span class="line">field_x=e.fields[&apos;x&apos;]    #注意不要混淆e.fields[&apos;x&apos;]和e[&apos;x&apos;]</span><br><span class="line">field_x     #返回&#123;&apos;a&apos;:&apos;hello&apos;,&apos;b&apos;:[1,2,3]&#125;</span><br><span class="line">field_x[&apos;a&apos;]     #返回&apos;hello&apos;</span><br><span class="line">field_y = e.fields[&apos;y&apos;]</span><br><span class="line">field_y    #返回&#123;&apos;a&apos;:&lt;function__main__.ExampleItem.&lt;lambda&gt;&gt;&#125;</span><br><span class="line">field_y.get(&apos;a&apos;,lambda x:x)    #返回&lt;function__main__.ExampleItem.&lt;lambda&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>【例2】爬取的信息有时是一个字符串列表，比如book[‘authors’]=[‘A’,’B’,’C’]，当写入csv文件时应该将所有字符串合并为一个字符串(串行化)，我们可以通过authors字段的元数据,告诉其他组件如何对authors字段的串行化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class BookItem(Item):</span><br><span class="line">    authors = Field(serializer = lambda x:&apos;|&apos;.join(x))</span><br></pre></td></tr></table></figure></p>
+<p>　　其中，元数据的键serializer是CsvItemExporter规定好的，它会用该键获取一个串行化函数，并用这个函数将authors字段串行化成一个字符串。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        预测隐形眼镜的类型（决策树） - Smilettech&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/1.png" />
+        </div>
+        <div class="name">
+            <i>Yu</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用ID3算法构造决策树"><span class="toc-text">用ID3算法构造决策树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）计算信息熵"><span class="toc-text">（1）计算信息熵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）按不同的特征值，划分出相应的子集"><span class="toc-text">（2）按不同的特征值，划分出相应的子集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（3）找到划分数据集的最优特征"><span class="toc-text">（3）找到划分数据集的最优特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（4）构造树"><span class="toc-text">（4）构造树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（5）绘制树"><span class="toc-text">（5）绘制树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（6）用决策树分类"><span class="toc-text">（6）用决策树分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（7）保存决策树"><span class="toc-text">（7）保存决策树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预测隐形眼镜的类型"><span class="toc-text">预测隐形眼镜的类型</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        预测隐形眼镜的类型（决策树）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-05-05 18:16:32</span></span>
+
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#机器学习实战" title="机器学习实战">机器学习实战</a>
+        
+        
+        </span>
+    </div>
+
+    <div class="post-content no-indent">
+        <h2 id="用ID3算法构造决策树"><a href="#用ID3算法构造决策树" class="headerlink" title="用ID3算法构造决策树"></a>用ID3算法构造决策树</h2><p>　　<img src="/2018/05/05/预测隐形眼镜的类型（决策树）/简单例子.png" alt="简单例子"></p>
+<h3 id="（1）计算信息熵"><a href="#（1）计算信息熵" class="headerlink" title="（1）计算信息熵"></a>（1）计算信息熵</h3><p>　　ID3算法用<strong>信息增益</strong>来寻找最优划分特征：计算每个特征划分数据集的信息增益，选择信息增益最大的特征<br>　　<em>什么是信息增益？</em> 划分数据集后，增加了多少信息？不确定性降低了多少？有序性增加了多少？这些都是信息增益。<br>　　<em>如何计算信息增益？</em> 用划分前后信息的增量计算，样本x的信息=$-\log_2p(x_i)$，i是样本属于的类别。一个数据集的信息可以用熵来表示，熵是信息的期望，公式为<script type="math/tex">-\sum_{i=1}^{k}p(x_i)\log_2p(x_i)</script>，一共有k个类别。<br>　　信息增益 = ① - ②<br>　　　　①划分前，计算数据集的信息熵<br>　　　　②划分后，计算出每个子集的信息熵，再求它们的加权和（权重是子集数/总数）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#熵</span><br><span class="line">import numpy as np</span><br><span class="line">from math import log</span><br><span class="line">def entropyFunc(data):</span><br><span class="line">    m = len(data)</span><br><span class="line">    labelCount = &#123;&#125;       #统计每一类别出现的次数</span><br><span class="line">    for feature_vec in data:       #遍历样本</span><br><span class="line">        labelvalue = feature_vec[-1]       #该样本的类别</span><br><span class="line">        labelCount[labelvalue] = labelCount.get(labelvalue,0)+1</span><br><span class="line"></span><br><span class="line">    shannonEnt = 0.0</span><br><span class="line">    for k in labelCount:</span><br><span class="line">        prob = labelCount[k] / m</span><br><span class="line">        shannonEnt -= prob * log(prob,2)</span><br><span class="line">    return shannonEnt</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#测试</span><br><span class="line">&gt;&gt; a = [[1,1,&apos;no&apos;],[1,1,&apos;no&apos;],[1,0,&apos;yes&apos;],[0,1,&apos;yes&apos;],[0,1,&apos;yes&apos;]]</span><br><span class="line">&gt;&gt; entropyFunc(a)</span><br><span class="line">0.9709505944546686</span><br></pre></td></tr></table></figure>
+<h3 id="（2）按不同的特征值，划分出相应的子集"><a href="#（2）按不同的特征值，划分出相应的子集" class="headerlink" title="（2）按不同的特征值，划分出相应的子集"></a>（2）按不同的特征值，划分出相应的子集</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#划分特征是&apos;A&apos;，用该特征划分能得到2个子树</span><br><span class="line">def splitData(data, featindex, value):</span><br><span class="line">    subdata = []</span><br><span class="line">    for sample in data:</span><br><span class="line">        if sample[featindex] == value:</span><br><span class="line">            featvec = sample[:featindex]</span><br><span class="line">            featvec.extend(sample[featindex+1:])</span><br><span class="line">            subdata.append(featvec)</span><br><span class="line">    return subdata</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; splitData(a,0,1)</span><br><span class="line">[[1, &apos;no&apos;], [1, &apos;no&apos;], [0, &apos;yes&apos;]]</span><br></pre></td></tr></table></figure>
+<h3 id="（3）找到划分数据集的最优特征"><a href="#（3）找到划分数据集的最优特征" class="headerlink" title="（3）找到划分数据集的最优特征"></a>（3）找到划分数据集的最优特征</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#选择最优划分特征</span><br><span class="line">def chooseBestFeature(data):</span><br><span class="line">    feat_num = len(data[0])         #特征数</span><br><span class="line">    before_entropy = entropyFunc(data)        #数据集划分前的熵</span><br><span class="line">    best_info_gain = 0.0</span><br><span class="line">    best_feature = -1</span><br><span class="line"></span><br><span class="line">    for i in range(feat_num - 1):       #遍历每个特征，只剩一个特征就不用划分了</span><br><span class="line">        feat_list = [sample[i] for sample in data]       #该特征的所有值(有重复)</span><br><span class="line">        feat_unique = set(feat_list)</span><br><span class="line"></span><br><span class="line">        later_entropy = 0.0       #不声明的话,下面的for循环外的区域就不能使用该变量</span><br><span class="line">        for val in feat_unique:</span><br><span class="line">            subdata = splitData(data, i, val)</span><br><span class="line">            prob = len(subdata)/len(data)</span><br><span class="line">            later_entropy += prob * entropyFunc(subdata)       ##数据集划分后的熵</span><br><span class="line"></span><br><span class="line">        info_gain = before_entropy - later_entropy       #计算每个特征的信息增益</span><br><span class="line">        if(info_gain &gt; best_info_gain):</span><br><span class="line">                best_info_gain = info_gain</span><br><span class="line">                best_feature = i</span><br><span class="line">    return best_feature        #返回最优特征的索引</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; chooseBestFeature(a)</span><br><span class="line">0      #说明第1个特征A(索引是0)是最好的划分数据集的特征</span><br></pre></td></tr></table></figure>
+<h3 id="（4）构造树"><a href="#（4）构造树" class="headerlink" title="（4）构造树"></a>（4）构造树</h3><p>　　当一个节点遇到以下情况时不分裂：<br>　　　　<em>①数据集中的数据属于同一类别</em><br>　　　　<em>②遍历完所有的特征（注意C4.5和CART每次划分数据时,不会减少特征），采用多数表决的方法决定该数据集的类别</em><br>　　其它情况时递归调用自己，继续按照相同的方式分裂<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#投票表决器</span><br><span class="line">def majorityClass(classlist):</span><br><span class="line">    classCount = &#123;&#125;</span><br><span class="line">    for vote in classlist:</span><br><span class="line">        classCount[vote] = classCount.get(vote, 0) + 1</span><br><span class="line">        sortedCount = sorted(classCount.items(), key = lambda x:x[1], reverse = True)</span><br><span class="line">    return sortedCount[0][0]</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#构造树</span><br><span class="line">def createTree(data, labels):</span><br><span class="line">    classlist = [sample[-1] for sample in data]</span><br><span class="line">    if classlist.count(classlist[0]) == len(classlist):    #如果类别完全相同(数据集只有一个类别)，则停止递归</span><br><span class="line">        return classlist[0]       #直接返回叶子节点</span><br><span class="line">    if len(data[0]) == 1:       #如果遍历完所有特征(只剩下标签列)，则停止递归</span><br><span class="line">        return majorityClass(classlist)       #直接返回投票表决结果</span><br><span class="line"></span><br><span class="line">    best_feature = chooseBestFeature(data)       #划分数据集的最好特征索引</span><br><span class="line">    best_feature_label = labels[best_feature]       #该特征的名称</span><br><span class="line">    myTree = &#123; best_feature_label:&#123;&#125; &#125;        #生成根结点</span><br><span class="line">    del(labels[best_feature])</span><br><span class="line"></span><br><span class="line">    feat_list = [sample[best_feature] for sample in data]</span><br><span class="line">    feat_unique = set(feat_list)       #该特征的值</span><br><span class="line">    for val in feat_unique:</span><br><span class="line">        sublabels = labels[:]</span><br><span class="line">        myTree[best_feature_label][val] = createTree(splitData(data,best_feature,val), sublabels)</span><br><span class="line">    return myTree</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; labels = [&apos;A&apos;,&apos;B&apos;]</span><br><span class="line">&gt;&gt; myTree = createTree(a,labels)</span><br><span class="line">&gt;&gt; myTree</span><br><span class="line">&#123;&apos;A&apos;: &#123;0: &apos;yes&apos;, 1: &#123;&apos;B&apos;: &#123;0: &apos;yes&apos;, 1: &apos;no&apos;&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="（5）绘制树"><a href="#（5）绘制树" class="headerlink" title="（5）绘制树"></a>（5）绘制树</h3><p>　　点击查看代码：<a href="https://github.com/smilettech/dataanalysis/blob/master/ML_exercise/treePlotter.py" target="_blank" rel="noopener">treePlotter.py</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import treePlotter</span><br><span class="line">treePlotter.createPlot(myTree)</span><br></pre></td></tr></table></figure></p>
+<p>　　<img src="/2018/05/05/预测隐形眼镜的类型（决策树）/例子图.png" alt="例子图"></p>
+<h3 id="（6）用决策树分类"><a href="#（6）用决策树分类" class="headerlink" title="（6）用决策树分类"></a>（6）用决策树分类</h3><p>　　在存储带有特征的数据会面临一个问题：程序无法确定特征在数据集中的位置，需要传入一个标签列表（位置与数据集的特征位置一致）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#myTree = &#123;&apos;A&apos;: &#123;0: &apos;yes&apos;, 1: &#123;&apos;B&apos;: &#123;0: &apos;yes&apos;, 1: &apos;no&apos;&#125;&#125;&#125;&#125;</span><br><span class="line">#labels = [&apos;A&apos;,&apos;B&apos;]</span><br><span class="line">#x_test = [1,1]</span><br><span class="line">#输出的类别应该是&apos;no&apos;</span><br><span class="line">def classify(myTree, labels, x_test):</span><br><span class="line">    first_str = list(myTree.keys())[0]       # &apos;A&apos;</span><br><span class="line">    feature_index = labels.index(first_str)       # 特征A在标签的哪个位置</span><br><span class="line"></span><br><span class="line">    second_dict = myTree[first_str]        # &#123;0: &apos;yes&apos;, 1: &#123;&apos;B&apos;: &#123;0: &apos;yes&apos;, 1: &apos;no&apos;&#125;&#125;&#125;</span><br><span class="line">    for key in second_dict.keys():       #遍历0、1（是特征A的值）</span><br><span class="line">        if x_test[feature_index] == key:       #如果测试向量的A特征值是key</span><br><span class="line">            if type(second_dict[key]).__name__ == &apos;dict&apos;:       #如果该特征值对应的节点不是叶子</span><br><span class="line">                classlabel = classify(second_dict[key], labels, x_test)</span><br><span class="line">            else:</span><br><span class="line">                classlabel = second_dict[key]</span><br><span class="line">    return classlabel</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; myTree = &#123;&apos;A&apos;: &#123;0: &apos;yes&apos;, 1: &#123;&apos;B&apos;: &#123;0: &apos;yes&apos;, 1: &apos;no&apos;&#125;&#125;&#125;&#125;</span><br><span class="line">&gt;&gt; labels = [&apos;A&apos;,&apos;B&apos;]</span><br><span class="line">&gt;&gt; x_test = [1,1]</span><br><span class="line">&gt;&gt; classify(myTree, labels,x_test)</span><br><span class="line">&apos;no&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="（7）保存决策树"><a href="#（7）保存决策树" class="headerlink" title="（7）保存决策树"></a>（7）保存决策树</h3><p>　　构造决策树非常耗时，而用创建好的决策树解决问题会很快。用pickle序列化对象，每次执行分类时就调用已构造好的决策树即可(k近邻算法就无法持久化分类器)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def storeTree(myTree,filename):      #保存</span><br><span class="line">    import pickle</span><br><span class="line">    fw = open(filename, &apos;wb&apos;)      #以二进制读写方式打开文件</span><br><span class="line">    pickle.dump(myTree, fw)         #序列化对象</span><br><span class="line">    fw.close()</span><br><span class="line"></span><br><span class="line">def grabTree(filename):      #读取文件，反序列化</span><br><span class="line">    import pickle</span><br><span class="line">    fr = open(filename, &apos;rb&apos;)</span><br><span class="line">    return pickle.load(fr)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; storeTree(myTree,&apos;classifierStorage.txt&apos;)</span><br><span class="line">&gt;&gt; myTree2 = trees.grabTree(&apos;classifierStorage.txt&apos;)</span><br><span class="line">&gt;&gt; myTree2</span><br><span class="line">&#123;&apos;A&apos;: &#123;0: &apos;yes&apos;, 1: &#123;&apos;B&apos;: &#123;0: &apos;yes&apos;, 1: &apos;no&apos;&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="预测隐形眼镜的类型"><a href="#预测隐形眼镜的类型" class="headerlink" title="预测隐形眼镜的类型"></a>预测隐形眼镜的类型</h2><p>　　隐形眼镜数据集来源于UCI数据库，包含很多患者眼部状况的观察条件，以及医生推荐的隐形眼镜类型（分为硬材质、软材质、不适合佩戴隐形眼镜）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; fr = open(&apos;lenses.txt&apos;)</span><br><span class="line">&gt;&gt; lenses = [inst.strip().split(&apos;\t&apos;) for inst in fr.readlines()]    #用\t分割数据行</span><br><span class="line">&gt;&gt; lensesLabels = [&apos;age&apos;,&apos;prescript&apos;,&apos;astigmatic&apos;,&apos;tearRate&apos;]</span><br><span class="line">&gt;&gt; lensesTree = createTree(lenses, lensesLabels)    #构造树</span><br><span class="line">&gt;&gt; lensesTree</span><br><span class="line">&#123;&apos;tearRate&apos;: &#123;&apos;normal&apos;: &#123;&apos;astigmatic&apos;: &#123;&apos;no&apos;: &#123;&apos;age&apos;: &#123;&apos;pre&apos;: &apos;soft&apos;,</span><br><span class="line">      &apos;presbyopic&apos;: &#123;&apos;prescript&apos;: &#123;&apos;hyper&apos;: &apos;soft&apos;, &apos;myope&apos;: &apos;no lenses&apos;&#125;&#125;,</span><br><span class="line">      &apos;young&apos;: &apos;soft&apos;&#125;&#125;,</span><br><span class="line">    &apos;yes&apos;: &#123;&apos;prescript&apos;: &#123;&apos;hyper&apos;: &#123;&apos;age&apos;: &#123;&apos;pre&apos;: &apos;no lenses&apos;,</span><br><span class="line">        &apos;presbyopic&apos;: &apos;no lenses&apos;,</span><br><span class="line">        &apos;young&apos;: &apos;hard&apos;&#125;&#125;,</span><br><span class="line">      &apos;myope&apos;: &apos;hard&apos;&#125;&#125;&#125;&#125;,</span><br><span class="line">  &apos;reduced&apos;: &apos;no lenses&apos;&#125;&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt; import treePlotter</span><br><span class="line">&gt;&gt; treePlotter.createPlot(lensesTree)</span><br></pre></td></tr></table></figure></p>
+<p>　　<img src="/2018/05/05/预测隐形眼镜的类型（决策树）/决策树.png" alt="决策树"><br>　　ID3算法的<strong>优点</strong>：计算复杂度不高，输出的结果易于理解，对缺失值不敏感，可以处理不相关特征数据。<br>　　ID3算法的<strong>缺点</strong>： ①上图所示的决策树非常好地匹配了实验数据，但是而这些匹配选项可能太多了（即可能产生过拟合问题），为了降低过拟合问题，我们可以裁剪决策树，去掉一些不必要的叶子节点（如果叶子节点只能增加少许信息,则可以删除该节点,将它并人到其他叶子节点中）；②ID3算法只能处理分类型或离散数值型数据，处理连续型数据可以用CART回归树算法。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</html>
